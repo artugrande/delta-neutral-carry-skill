@@ -1,0 +1,8 @@
+reference-cmc-skills/
+node_modules/
+.env
+.venv/
+__pycache__/
+*.pyc
+backtest/data/*.csv
+backtest/output/*.csv
