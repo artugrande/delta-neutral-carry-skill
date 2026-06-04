@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delta-Neutral Carry — a CoinMarketCap Strategy Skill</title>
+  <meta name="description" content="A CoinMarketCap Agent Skill that earns perpetual funding while staying market-neutral — and knows when to sit in stablecoins and do nothing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #ffffff;
+      --muted: #8a8a8a;
+      --dim: #5a5a5a;
+      --line: #1c1c1c;
+      --accent: #4ade80;      /* strategy green, matches the equity curve */
+      --accent-dim: #1d3b29;
+      --red: #f87171;
+      --maxw: 760px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+    section { padding: 110px 0; border-bottom: 1px solid var(--line); }
+    section:last-of-type { border-bottom: none; }
+
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 26px;
+    }
+    .beat {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-size: clamp(38px, 7vw, 68px);
+      font-weight: 600;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      margin-bottom: 30px;
+    }
+    h2 {
+      font-size: clamp(28px, 4.5vw, 42px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 26px;
+    }
+    h1 .g, h2 .g { color: var(--accent); }
+    .lead {
+      font-size: clamp(18px, 2.4vw, 22px);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 620px;
+    }
+    p { font-size: 18px; color: #cfcfcf; margin-bottom: 20px; max-width: 640px; }
+    p.big { font-size: clamp(20px, 2.6vw, 26px); color: var(--fg); font-weight: 400; line-height: 1.45; }
+    strong { color: var(--fg); font-weight: 600; }
+    .em-green { color: var(--accent); font-weight: 600; }
+    .em-red { color: var(--red); font-weight: 600; }
+
+    /* Hero */
+    .hero { padding-top: 140px; padding-bottom: 120px; }
+    .hero-meta {
+      margin-top: 54px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 15px;
+    }
+    .chip b { color: var(--fg); font-weight: 700; }
+
+    /* delta-neutral visual */
+    .legs {
+      margin: 40px 0 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .leg {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .leg .t { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; }
+    .leg .v { font-size: 22px; font-weight: 600; }
+    .leg .long .v { color: var(--accent); }
+    .leg.eq {
+      grid-column: 1 / -1;
+      text-align: center;
+      background: var(--accent-dim);
+      border-color: transparent;
+    }
+    .leg.eq .v { color: var(--accent); font-size: 26px; }
+
+    /* table */
+    .tablewrap { overflow-x: auto; margin: 8px -4px 26px; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 560px; }
+    th, td { text-align: right; padding: 14px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; }
+    thead th { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); font-weight: 400; }
+    tbody tr.skill { background: rgba(74,222,128,0.06); }
+    tbody tr.skill td { color: var(--fg); font-weight: 600; }
+    tbody tr.skill td:first-child { color: var(--accent); }
+    tbody td { color: var(--muted); }
+    .bench td:first-child { color: var(--dim); font-style: italic; }
+    .neg { color: var(--red); }
+    .pos { color: var(--accent); }
+
+    .chart { margin: 30px 0 14px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #060606; }
+    .chart img { display: block; width: 100%; height: auto; }
+    .caption { font-size: 14px; color: var(--dim); font-style: italic; }
+
+    /* code */
+    pre {
+      background: #0a0a0a;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px;
+      overflow-x: auto;
+      margin: 18px 0 26px;
+    }
+    code { font-family: 'Space Mono', monospace; font-size: 14px; color: #d8d8d8; line-height: 1.7; }
+    p code, li code { background: #141414; padding: 2px 7px; border-radius: 5px; font-size: 14px; color: var(--accent); }
+    .step { display: flex; gap: 18px; margin-bottom: 24px; align-items: flex-start; }
+    .step .n { font-family: 'Space Mono', monospace; color: var(--accent); font-size: 14px; padding-top: 2px; min-width: 28px; }
+    .step .b { flex: 1; }
+    .step .b p { margin-bottom: 0; }
+
+    .ask {
+      border-left: 2px solid var(--accent);
+      padding: 4px 0 4px 22px;
+      margin: 30px 0;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 500;
+    }
+
+    /* CTA buttons */
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+    a.btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .04em;
+      text-decoration: none;
+      padding: 13px 22px;
+      border-radius: 100px;
+      border: 1px solid var(--line);
+      color: var(--fg);
+      transition: all .15s ease;
+    }
+    a.btn:hover { border-color: var(--fg); }
+    a.btn.primary { background: var(--accent); color: #04130a; border-color: var(--accent); font-weight: 700; }
+    a.btn.primary:hover { background: #fff; border-color: #fff; }
+
+    footer { padding: 60px 0 80px; color: var(--dim); font-size: 14px; }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 560px) {
+      section { padding: 80px 0; }
+      .hero { padding-top: 100px; }
+      .legs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BEAT 1 — HOOK -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">BNB Hack · Track 2 · Strategy Skills</div>
+      <h1>A fund that earns while you sleep — and knows when <span class="g">not to trade.</span></h1>
+      <p class="lead">Delta-Neutral Carry is a CoinMarketCap Agent Skill. It harvests perpetual funding without betting on whether the market goes up or down — and steps aside into stablecoins the moment that edge stops paying.</p>
+      <div class="hero-meta">
+        <span class="chip">Powered by <b>CoinMarketCap</b></span>
+        <span class="chip">Built on <b>BNB Chain</b></span>
+        <span class="chip"><b>Delta ≈ 0</b></span>
+        <span class="chip">Sharpe <b>~25</b></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- BEAT 2 — WHAT IT IS -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Beat 02 — What it is</div>
+      <h2>You buy spot. You short the perp. Price risk cancels out.</h2>
+      <p class="big">Buy the asset on spot and short the same size on a perpetual. Your exposure to price nets to zero. So where's the return? The <strong>funding rate</strong> — in a bull market, longs pay shorts every eight hours, and you collect it.</p>
+      <div class="legs">
+        <div class="leg long"><div class="t">Spot leg</div><div class="v">+1 BTC long</div></div>
+        <div class="leg"><div class="t">Perp leg</div><div class="v">−1 BTC short</div></div>
+        <div class="leg eq"><div class="t">Net price exposure</div><div class="v">Delta ≈ 0 → return = funding</div></div>
+      </div>
+      <p>This is <strong>risk-premium income, not price speculation</strong> — the one edge a retail agent can actually harvest without speed or inside information.</p>
+    </div>
+  </section>
+
+  <!-- BEAT 3 — KNOWS WHEN NOT TO TRADE -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Beat 03 — The live moment</div>
+      <h2>The smart part: it knows when <span class="g">not</span> to trade.</h2>
+      <p class="big">Ask it live, with real CoinMarketCap data:</p>
+      <div class="ask">"Should I be in a funding carry right now?"</div>
+      <p>Right now funding is <span class="em-red">negative</span>, in the middle of <strong>Extreme Fear</strong>. The Skill does <strong>not</strong> enter — it says <span class="em-green">HOLD, stay in stablecoins.</span> A naive yield bot would pile in anyway and lose money. This one knows the premium isn't paying, so it waits. <strong>That's rule adherence.</strong></p>
+    </div>
+  </section>
+
+  <!-- BEAT 4 — THE INSIGHT + BACKTEST -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Beat 04 — The insight, proven</div>
+      <h2>Turnover kills the carry. We discovered it in the data.</h2>
+      <p class="big">The "smart" versions that jump in and out chasing funding <span class="em-red">all lose money</span> — fees on two legs bleed them dry. The winner simply holds the position and only exits on a panic circuit-breaker.</p>
+      <div class="chart"><img src="equity_curve.png" alt="Strategy equity curve: flat and rising through BTC's boom and crash" /></div>
+      <p class="caption">3.4-year backtest. Strategy equity (green) rises steadily through BTC's full boom-and-crash (grey).</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Strategy</th><th>Return</th><th>APR</th><th>Max DD</th><th>Sharpe</th><th>Trades</th></tr>
+          </thead>
+          <tbody>
+            <tr class="skill"><td>This skill</td><td>+19.35%</td><td>5.31%</td><td>−0.35%</td><td>25.5</td><td>2</td></tr>
+            <tr><td>harvest (chase funding)</td><td class="neg">−6.51%</td><td class="neg">−1.95%</td><td class="neg">−10.08%</td><td class="neg">−2.9</td><td>456</td></tr>
+            <tr><td>always-on</td><td class="neg">−9.44%</td><td class="neg">−2.86%</td><td class="neg">−11.93%</td><td class="neg">−4.1</td><td>514</td></tr>
+            <tr><td>"smart" overlay</td><td class="neg">−6.86%</td><td class="neg">−2.06%</td><td class="neg">−8.12%</td><td class="neg">−3.7</td><td>416</td></tr>
+            <tr class="bench"><td>buy &amp; hold BTC</td><td class="pos">+290%</td><td>48.9%</td><td class="neg">−49.7%</td><td>1.1</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Read it the right way: buy-and-hold made far more — with a <span class="em-red">−50% drawdown</span>. This skill makes a steady <span class="em-green">~5% APR</span> with a <strong>−0.35%</strong> max drawdown and a Sharpe of <strong>~25</strong>. A different product, for people who want yield without the rollercoaster. Judge it on <strong>risk-adjusted</strong> terms.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Under the hood</div>
+      <h2>A small, deterministic state machine.</h2>
+      <div class="step"><div class="n">01</div><div class="b"><p><strong>Read the signal.</strong> Market-wide funding, open interest and liquidations from <code>get_global_crypto_derivatives_metrics</code>; Fear &amp; Greed from <code>get_global_metrics_latest</code>; BTC spot price.</p></div></div>
+      <div class="step"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> <code>FLAT → ENTER</code> when annualized funding ≥ +5%. <code>DEPLOYED → EXIT</code> only when funding falls below the −15% circuit breaker. Otherwise <strong>HOLD</strong> — the most common, correct action.</p></div></div>
+      <div class="step"><div class="n">03</div><div class="b"><p><strong>Report.</strong> A concrete, auditable allocation: deploy %, both legs, and the single trigger that would change the position.</p></div></div>
+      <p>CMC only exposes <strong>aggregate</strong> funding, so the skill uses it as a <em>regime signal</em> and runs the carry on the single deepest-liquidity leg (BTC). Simpler, more robust, fully CMC-native.</p>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Get it running</div>
+      <h2>Install in any Claude-skill host.</h2>
+      <p>Drop the skill folder into your skills directory:</p>
+      <pre><code>cp -r skills/delta-neutral-carry /path/to/your/skills/directory/</code></pre>
+      <p>Then connect the CoinMarketCap MCP (get a free key at <a href="https://pro.coinmarketcap.com/login" style="color:var(--accent)">pro.coinmarketcap.com</a>):</p>
+      <pre><code>{
+  "mcpServers": {
+    "cmc-mcp": {
+      "url": "https://mcp.coinmarketcap.com/mcp",
+      "headers": { "X-CMC-MCP-API-KEY": "your-api-key" }
+    }
+  }
+}</code></pre>
+      <p>Then just ask: <code>Should I be in a funding carry right now?</code> &nbsp;or&nbsp; <code>/delta-neutral-carry</code></p>
+      <div class="btns">
+        <a class="btn primary" href="https://github.com/artugrande/delta-neutral-carry-skill">View on GitHub →</a>
+        <a class="btn" href="https://github.com/artugrande/delta-neutral-carry-skill/blob/main/skills/delta-neutral-carry/SKILL.md">Read the SKILL.md</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section>
+    <div class="wrap">
+      <div class="beat">Beat 05 — Close</div>
+      <h2 style="max-width:620px">Quant research, democratized.</h2>
+      <p class="big">All powered by CoinMarketCap data. An installable, auditable, deterministic Skill — anyone runs it and gets the same result. An agent that knows when to harvest… <span class="em-green">and when to wait.</span></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      Delta-Neutral Carry · Built with CoinMarketCap data for BNB Hack — Track 2 · MIT licensed ·
+      <a href="https://github.com/artugrande/delta-neutral-carry-skill">github.com/artugrande/delta-neutral-carry-skill</a>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -5,6 +5,8 @@
 >
 > Built for **BNB HACK: AI Trading Agent Edition** — Track 2 (Strategy Skills).
 
+**🌐 Live overview → [delta-neutral-carry.vercel.app](https://delta-neutral-carry.vercel.app)**
+
 ## The idea in one line
 
 Hold BTC spot (long) and short the same notional in a BTC perpetual. Price moves cancel
