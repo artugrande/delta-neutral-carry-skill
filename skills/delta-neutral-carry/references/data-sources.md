@@ -23,9 +23,12 @@ The skill therefore uses aggregate funding as a *regime signal* and runs the car
 deep-liquidity leg (BTC). This is a deliberate design choice, not a workaround — aggregate
 funding is dominated by BTC/ETH, so the signal and the traded leg are well aligned.
 
-> Not yet verified against the live MCP (no API key at design time). The live MCP may expose
-> more than the docs; if a per-asset funding field turns up, Step 2 of the strategy can be
-> upgraded to rank assets. Until confirmed, assume aggregate-only.
+> **Verified live (2026-06-04)** against `mcp.coinmarketcap.com`. The `get_global_crypto_derivatives_metrics`
+> tool returns a single aggregate `fundingRate` object — e.g.
+> `"fundingRate": {"current": "-0.00053135", "percentage_change_24h": "-111.7%", ...}` —
+> plus aggregate `perpetuals.openInterest`, `perpetuals.volume`, and `btc_liquidations`.
+> There is **no per-asset funding field**, confirming the aggregate-only design. If CMC ever
+> adds per-symbol funding, Step 2 can be upgraded to rank assets; until then, aggregate-only.
 
 ## Supporting data used
 
