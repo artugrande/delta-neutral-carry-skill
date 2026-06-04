@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Delta-Neutral Carry — a CoinMarketCap Strategy Skill</title>
   <meta name="description" content="A CoinMarketCap Agent Skill that earns perpetual funding while staying market-neutral — and knows when to sit in stablecoins and do nothing." />
+  <link rel="icon" type="image/svg+xml" href="DNCLOGOSVG.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -182,32 +183,131 @@
     footer { padding: 60px 0 80px; color: var(--dim); font-size: 14px; }
     footer a { color: var(--muted); }
 
+    /* navbar */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+    .brand img { height: 24px; width: auto; display: block; }
+    .brand span { font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .15s ease;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a.gh {
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 7px 15px;
+      color: var(--fg);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+    }
+    .nav-links a.gh:hover { border-color: var(--fg); }
+    body { padding-top: 62px; }
+    section, .hero { scroll-margin-top: 62px; }
+
+    /* powered-by lockup */
+    .powered {
+      margin-top: 52px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 36px;
+    }
+    .pwr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pwr img { height: 30px; width: auto; display: block; }
+    .pwr .lbl { display: flex; flex-direction: column; line-height: 1.25; }
+    .pwr .lbl small {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .pwr .lbl b { font-size: 15px; font-weight: 600; color: var(--fg); }
+    .pwr-sep { width: 1px; height: 34px; background: var(--line); }
+
+    @media (max-width: 640px) {
+      .nav-links { gap: 18px; }
+      .nav-links a.hide-sm { display: none; }
+    }
     @media (max-width: 560px) {
       section { padding: 80px 0; }
       .hero { padding-top: 100px; }
       .legs { grid-template-columns: 1fr; }
+      .powered { gap: 24px; }
+      .pwr-sep { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <img src="DNCLOGOSVG.svg" alt="Delta-Neutral Carry logo" />
+        <span>Delta-Neutral Carry</span>
+      </a>
+      <div class="nav-links">
+        <a href="#strategy" class="hide-sm">Strategy</a>
+        <a href="#results" class="hide-sm">Results</a>
+        <a href="#install" class="hide-sm">Install</a>
+        <a href="https://github.com/artugrande/delta-neutral-carry-skill" class="gh">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- BEAT 1 — HOOK -->
-  <header class="hero">
+  <header class="hero" id="top">
     <div class="wrap">
       <div class="eyebrow">BNB Hack · Track 2 · Strategy Skills</div>
       <h1>A fund that earns while you sleep — and knows when <span class="g">not to trade.</span></h1>
       <p class="lead">Delta-Neutral Carry is a CoinMarketCap Agent Skill. It harvests perpetual funding without betting on whether the market goes up or down — and steps aside into stablecoins the moment that edge stops paying.</p>
+      <div class="powered">
+        <div class="pwr">
+          <img src="coinmarketcappng.png" alt="CoinMarketCap" />
+          <span class="lbl"><small>Powered by</small><b>CoinMarketCap</b></span>
+        </div>
+        <div class="pwr-sep"></div>
+        <div class="pwr">
+          <img src="bnbchain.png" alt="BNB Chain" />
+          <span class="lbl"><small>Built on</small><b>BNB Chain</b></span>
+        </div>
+      </div>
       <div class="hero-meta">
-        <span class="chip">Powered by <b>CoinMarketCap</b></span>
-        <span class="chip">Built on <b>BNB Chain</b></span>
         <span class="chip"><b>Delta ≈ 0</b></span>
         <span class="chip">Sharpe <b>~25</b></span>
+        <span class="chip">Track 2 · <b>Strategy Skills</b></span>
       </div>
     </div>
   </header>
 
   <!-- BEAT 2 — WHAT IT IS -->
-  <section>
+  <section id="strategy">
     <div class="wrap">
       <div class="beat">Beat 02 — What it is</div>
       <h2>You buy spot. You short the perp. Price risk cancels out.</h2>
@@ -233,7 +333,7 @@
   </section>
 
   <!-- BEAT 4 — THE INSIGHT + BACKTEST -->
-  <section>
+  <section id="results">
     <div class="wrap">
       <div class="beat">Beat 04 — The insight, proven</div>
       <h2>Turnover kills the carry. We discovered it in the data.</h2>
@@ -272,7 +372,7 @@
   </section>
 
   <!-- INSTALL -->
-  <section>
+  <section id="install">
     <div class="wrap">
       <div class="beat">Get it running</div>
       <h2>Install in any Claude-skill host.</h2>

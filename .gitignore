@@ -7,3 +7,5 @@ __pycache__/
 backtest/data/*.csv
 backtest/output/*.csv
 .mcp.json
+
+.DS_Store
