@@ -12,7 +12,7 @@ import csv, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV = os.path.join(ROOT, "backtest", "output", "equity_curve.csv")
-OUT = os.path.join(ROOT, "site", "equity_curve.svg")
+OUT = os.path.join(ROOT, "site", "assets", "equity_curve.svg")
 
 rows = []
 with open(CSV) as f:
@@ -99,19 +99,9 @@ svg = f'''<svg viewBox="0 0 {W:.0f} {H:.0f}" xmlns="http://www.w3.org/2000/svg" 
       <stop offset="100%" stop-color="#4ade80" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <style>
-    .grid {{ stroke:#171717; stroke-width:1; }}
-    .ylab {{ font-family:'Space Mono', monospace; font-size:13px; }}
-    .xlab {{ font-family:'Space Mono', monospace; font-size:13px; fill:#5a5a5a; }}
-    .btc-ax {{ fill:#7a7a7a; }}
-    .strat-ax {{ fill:#4ade80; }}
-    .axtitle {{ font-family:'Space Grotesk', sans-serif; font-size:13px; }}
-    .btc  {{ fill:none; stroke:#6a6a6a; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }}
-    .strat {{ fill:none; stroke:#4ade80; stroke-width:3.2; stroke-linejoin:round; stroke-linecap:round; }}
-    .lgd {{ font-family:'Space Grotesk', sans-serif; font-size:14px; }}
-    .tag {{ font-family:'Space Mono', monospace; font-size:13px; font-weight:700; }}
-    .title {{ font-family:'Space Grotesk', sans-serif; font-size:17px; font-weight:600; fill:#ededed; }}
-  </style>
+  <!-- No internal <style>: this SVG is inlined into the page by js/chart.js and
+       styled by the document's `.eqsvg` rules in styles.css. Keeping styles out
+       avoids the SVG's class names (.tag/.title/.grid…) leaking onto the page. -->
   <text x="{W/2:.0f}" y="30" class="title" text-anchor="middle">Flat, rising PnL through BTC&#39;s chaos</text>
   {grid}
   {blabels}{elabels}{xticks}
