@@ -46,7 +46,7 @@
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
       <h1 class="reveal-words">Hold BTC in uptrends. <span class="g">Cash in downtrends.</span></h1>
-      <p class="lead reveal">A CoinMarketCap Agent Skill that follows BTC's trend. It holds BTC while price is above its moving average, and moves to stablecoins when the trend breaks — riding the bull runs and sitting out the −50% crashes. Chosen after backtesting 27 strategies.</p>
+      <p class="lead reveal">A CoinMarketCap skill that holds BTC while it's trending up, and steps aside to stablecoins when it's not. We tested 27 strategies — this one caught the rallies and dodged the −50% crashes.</p>
       <div class="powered reveal">
         <div class="pwr">
           <img src="assets/coinmarketcappng.png" alt="CoinMarketCap" />
@@ -67,13 +67,13 @@
     <div class="wrap">
       <div class="beat reveal">Beat 02 — What it is</div>
       <h2 class="reveal-words">Above its trend, hold BTC. Below it, go to cash.</h2>
-      <p class="big reveal">Track BTC against its <strong>moving average</strong> — a slow line through the price. While BTC trades above it, the trend is up: hold BTC and ride it. When price drops below, the trend has turned: move to stablecoins. That single rule is the whole strategy.</p>
+      <p class="big reveal">One line — BTC's <strong>moving average</strong> — splits the whole strategy. Price above it: hold BTC. Price below it: hold stablecoins. That's the entire rule.</p>
       <div class="legs">
         <div class="leg long reveal" data-i="0"><div class="t">Price &gt; its average</div><div class="v">Hold BTC</div><div class="leg-glow"></div></div>
         <div class="leg short reveal" data-i="1"><div class="t">Price &lt; its average</div><div class="v">Move to cash</div><div class="leg-glow"></div></div>
         <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–2026 (100-day)</div><div class="v">More upside than holding BTC, a third of the drawdown</div><div class="leg-glow"></div></div>
       </div>
-      <p class="reveal">It never catches the exact top or bottom — it doesn't try to. It just stays <strong>in</strong> for the long uptrends and <strong>out</strong> for the deep drawdowns. Compounded over years, that is what moves the needle.</p>
+      <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes. Over years, that's what compounds.</p>
     </div>
   </section>
 
@@ -94,7 +94,7 @@
         <div class="term-body" id="termBody"></div>
       </div>
 
-      <p class="reveal">BTC is <strong>$64,210</strong> — about <span class="em-red">12% below its 100-day average</span>, market in <strong>Extreme Fear</strong>. The trend is down, so the output is <span class="em-green">move to stablecoins.</span> It won't catch the falling knife — it waits for price to reclaim the average, then buys back in.</p>
+      <p class="reveal">BTC is <span class="em-red">12% below its 100-day average</span>, in <strong>Extreme Fear</strong>. Trend down → <span class="em-green">stay in stablecoins.</span> No catching the falling knife — it waits for price to reclaim the line, then buys back.</p>
     </div>
   </section>
 
@@ -103,7 +103,7 @@
     <div class="wrap">
       <div class="beat reveal">The research</div>
       <h2 class="reveal-words">We tested 27 strategies. Trend-following won.</h2>
-      <p class="big reveal">Before committing, we backtested 27 strategies across 7 families on the same data — then split the timeline in two: calibrate on the first half (<strong>in-sample</strong>), judge on the unseen second half (<strong>out-of-sample</strong>). A strategy only counts if it survives data it never saw.</p>
+      <p class="big reveal">We backtested 27 strategies across 7 families on the same data, then split the timeline: tune on the first half (<strong>in-sample</strong>), score on the unseen second half (<strong>out-of-sample</strong>). A strategy only counts if it works on data it never saw.</p>
 
       <p class="reveal">It's a whole family that wins, not one lucky setting. Median out-of-sample Sharpe, by family:</p>
       <div class="fam-bars reveal">
@@ -142,7 +142,7 @@
     <div class="wrap">
       <div class="beat reveal">Beat 04 — Backtested, out-of-sample</div>
       <h2 class="reveal-words">More return than holding BTC. A third of the drawdown.</h2>
-      <p class="big reveal">Same $1 in BTC, 2023→2026. The trend strategy stays in for the uptrends and steps out for the crashes, so it compounds higher <em>and</em> dips far less. Pick the moving-average window:</p>
+      <p class="big reveal">Same $1, 2023→2026. In for the uptrends, out for the crashes — so it ends higher <em>and</em> dips far less. Pick the window:</p>
 
       <!-- MA WINDOW TOGGLE -->
       <div class="lev-toggle reveal" role="group" aria-label="Moving-average window">
@@ -225,7 +225,7 @@
     <div class="wrap">
       <div class="beat reveal">From signal to position</div>
       <h2 class="reveal-words">How you'd actually run it.</h2>
-      <p class="big reveal">The skill decides; you execute. It reads the market and outputs one of two states — it never touches your funds. The whole loop:</p>
+      <p class="big reveal">The skill decides; you execute — it never touches your funds. The whole loop:</p>
 
       <div class="steps">
         <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Is BTC above its trend?" It returns <span class="em-green">RISK-ON → hold BTC</span> or <span class="em-red">RISK-OFF → hold cash</span>, plus the exact moving-average price that flips it.</p></div></div>
