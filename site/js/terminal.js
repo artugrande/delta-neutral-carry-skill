@@ -43,7 +43,7 @@
     var p = line('', 'q');
     var prompt = el('span', 'prompt', '$ ');
     p.appendChild(prompt);
-    var cur = await typeInto(p, 'Should I be in a funding carry right now?', 34);
+    var cur = await typeInto(p, 'Should I be holding BTC right now?', 36);
     await wait(420);
     cur.remove();
 
@@ -54,11 +54,11 @@
 
     // 3. signal rows (staggered)
     var rows = [
-      ['funding (annualized)', '−8.4%  ▼', 'neg'],
-      ['fear &amp; greed index', '18 · Extreme Fear', 'neg'],
       ['btc spot', '$64,210', 'k'],
-      ['entry threshold', '≥ +5.0%', 'k'],
-      ['circuit breaker', '−15.0%', 'k']
+      ['100-day average', '$72,800', 'k'],
+      ['price vs trend', '−11.8%  ▼', 'neg'],
+      ['fear &amp; greed index', '18 · Extreme Fear', 'neg'],
+      ['trend signal', 'DOWN', 'neg']
     ];
     for (var i = 0; i < rows.length; i++) {
       var rr = row(rows[i][0], rows[i][1], rows[i][2]);
@@ -70,36 +70,36 @@
 
     await wait(300);
     line('&nbsp;');
-    line('<span class="dim">→ state: <span class="k">FLAT</span> · funding below +5% threshold</span>');
+    line('<span class="dim">→ regime: <span class="neg">RISK-OFF</span> · price below its 100-day average</span>');
     await wait(520);
 
     // 4. verdict
     var v = el('div', 'verdict');
-    v.innerHTML = '<span class="tag">HOLD</span><span class="txt">Stay in stablecoins — the premium isn\'t paying. Wait.</span>';
+    v.innerHTML = '<span class="tag">TO CASH</span><span class="txt">BTC is below its trend — move to stablecoins and wait for the uptrend.</span>';
     body.appendChild(v);
     setTimeout(function () { v.classList.add('show'); }, 16);
     await wait(700);
-    var t = line('<span class="dim">next action → <span class="pos">ENTER</span> the moment annualized funding ≥ +5%</span>');
+    var t = line('<span class="dim">next action → <span class="pos">BUY BTC</span> when price closes back above its 100-day average</span>');
     t.style.opacity = 0; t.style.transition = 'opacity .4s ease';
     setTimeout(function () { t.style.opacity = 1; }, 16);
   }
 
   function runStatic() {
     body.innerHTML = '';
-    line('<span class="prompt">$ </span><span class="q">Should I be in a funding carry right now?</span>');
+    line('<span class="prompt">$ </span><span class="q">Should I be holding BTC right now?</span>');
     line('&nbsp;');
     line('<span class="dim">→ reading live CoinMarketCap data…</span>');
-    row('funding (annualized)', '−8.4%  ▼', 'neg');
-    row('fear &amp; greed index', '18 · Extreme Fear', 'neg');
     row('btc spot', '$64,210', 'k');
-    row('entry threshold', '≥ +5.0%', 'k');
-    row('circuit breaker', '−15.0%', 'k');
+    row('100-day average', '$72,800', 'k');
+    row('price vs trend', '−11.8%  ▼', 'neg');
+    row('fear &amp; greed index', '18 · Extreme Fear', 'neg');
+    row('trend signal', 'DOWN', 'neg');
     line('&nbsp;');
-    line('<span class="dim">→ state: <span class="k">FLAT</span> · funding below +5% threshold</span>');
+    line('<span class="dim">→ regime: <span class="neg">RISK-OFF</span> · price below its 100-day average</span>');
     var v = el('div', 'verdict show');
-    v.innerHTML = '<span class="tag">HOLD</span><span class="txt">Stay in stablecoins — the premium isn\'t paying. Wait.</span>';
+    v.innerHTML = '<span class="tag">TO CASH</span><span class="txt">BTC is below its trend — move to stablecoins and wait for the uptrend.</span>';
     body.appendChild(v);
-    line('<span class="dim">next action → <span class="pos">ENTER</span> the moment annualized funding ≥ +5%</span>');
+    line('<span class="dim">next action → <span class="pos">BUY BTC</span> when price closes back above its 100-day average</span>');
   }
 
   var started = false;

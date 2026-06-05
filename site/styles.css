@@ -199,7 +199,20 @@ em { font-style: italic; color: #e2e2e2; }
 .eqsvg .tag { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; }
 .eqsvg .lgd { font-family: 'Space Grotesk'; font-size: 13px; }
 .eqsvg .bench-line { fill: none; stroke: #6a6a6a; stroke-width: 1.4; stroke-dasharray: 5 5; opacity: .65; }
+.eqsvg .btc-line { fill: none; stroke: #6a6a6a; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
 .eqsvg .ylab { fill: #6a6a6a; }
+
+/* ---------- FAMILY ROBUSTNESS BARS (research) ---------- */
+.fam-bars { margin: 20px 0 28px; display: flex; flex-direction: column; gap: 11px; }
+.fam-row { display: grid; grid-template-columns: 104px 1fr 52px; align-items: center; gap: 14px; }
+.fam-row .fam-name { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.fam-track { height: 10px; background: #141414; border-radius: 6px; overflow: hidden; }
+.fam-fill { height: 100%; border-radius: 6px; background: var(--accent); width: 0; transition: width 1s cubic-bezier(.2,.7,.2,1); }
+.reveal.in .fam-fill, .fam-bars.in .fam-fill { /* widths set inline; animate from 0 */ }
+.fam-fill.dim { background: #3a3a3a; }
+.fam-fill.bad { background: var(--red); }
+.fam-row .fam-val { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--fg); text-align: right; font-variant-numeric: tabular-nums; }
+.fam-row .fam-val.bad { color: var(--red); }
 .caption { font-size: 14px; color: var(--dim); font-style: italic; max-width: 100%; }
 
 /* ---------- LEVERAGE TOGGLE ---------- */
