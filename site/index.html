@@ -73,7 +73,6 @@
         <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
         <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% just holding the four — at a third of the drawdown</div><div class="leg-glow"></div></div>
       </div>
-      <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes, spread across four liquid majors so no single coin can sink it. Over years, that's what compounds.</p>
     </div>
   </section>
 
@@ -94,7 +93,7 @@
         <div class="term-body" id="termBody"></div>
       </div>
 
-      <p class="reveal">All four majors are <span class="em-red">below their 100-day averages</span>, in <strong>Extreme Fear</strong>. Nothing's trending up → <span class="em-green">100% stablecoins.</span> No catching the falling knife — it waits for the first major to reclaim its line, then buys that slice.</p>
+      <p class="reveal">Right now: all four below their averages, in Extreme Fear → <span class="em-green">100% stablecoins.</span> No catching the falling knife.</p>
     </div>
   </section>
 
@@ -103,9 +102,7 @@
     <div class="wrap">
       <div class="beat reveal">The research</div>
       <h2 class="reveal-words">We tested 27 strategies. Trend-following won.</h2>
-      <p class="big reveal">We backtested 27 strategies across 7 families on the same data, then split the timeline: tune on the first half (<strong>in-sample</strong>), score on the unseen second half (<strong>out-of-sample</strong>). A strategy only counts if it works on data it never saw.</p>
-
-      <p class="reveal">It's a whole family that wins, not one lucky setting. Median out-of-sample Sharpe, by family:</p>
+      <p class="big reveal">27 strategies, 7 families, same data — scored on a held-out second half they were never tuned on. Median out-of-sample Sharpe, by family:</p>
       <div class="fam-bars reveal">
         <div class="fam-row"><span class="fam-name">Trend</span><div class="fam-track"><div class="fam-fill" style="width:93%"></div></div><span class="fam-val">2.15</span></div>
         <div class="fam-row"><span class="fam-name">Momentum</span><div class="fam-track"><div class="fam-fill dim" style="width:19%"></div></div><span class="fam-val">0.44</span></div>
@@ -115,21 +112,7 @@
         <div class="fam-row"><span class="fam-name">Mean-rev</span><div class="fam-track"><div class="fam-fill bad" style="width:5%"></div></div><span class="fam-val bad">−0.38</span></div>
       </div>
 
-      <div class="tablewrap reveal">
-        <table>
-          <thead>
-            <tr><th>Strategy (5 of 27)</th><th>Max DD</th><th>IS Sharpe</th><th>OOS Sharpe</th></tr>
-          </thead>
-          <tbody>
-            <tr class="skill"><td>trend-following ← winner</td><td class="neg">−17%</td><td>2.15</td><td class="pos">2.27</td></tr>
-            <tr><td>momentum (weekly)</td><td class="neg">−65%</td><td>1.23</td><td class="neg">0.21</td></tr>
-            <tr><td>fear &amp; greed contrarian</td><td class="neg">−41%</td><td>2.09</td><td class="neg">0.02</td></tr>
-            <tr class="bench"><td>buy &amp; hold BTC</td><td class="neg">−51%</td><td>1.78</td><td class="neg">0.23</td></tr>
-            <tr><td>RSI mean-reversion</td><td class="neg">−47%</td><td>0.22</td><td class="neg">−0.38</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="reveal">The pattern is clear: the exciting strategies — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed: 2.09 → 0.02). Mean-reversion lost money. Only <span class="em-green">trend-following</span> held up on data it never saw. We then diversified the winner across the majors (BTC/ETH/BNB/SOL), lifting out-of-sample Sharpe <span class="em-green">2.27 → 2.53</span> — that's the final strategy.</p>
+      <p class="reveal">The exciting ones — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed 2.09 → 0.02); mean-reversion lost money. Only <span class="em-green">trend-following</span> held up. Diversifying it across BTC/ETH/BNB/SOL lifted out-of-sample Sharpe to <span class="em-green">2.53</span> — the final strategy.</p>
     </div>
   </section>
 
@@ -138,7 +121,7 @@
     <div class="wrap">
       <div class="beat reveal">Beat 04 — Backtested, out-of-sample</div>
       <h2 class="reveal-words">Same four coins. The timing changes everything.</h2>
-      <p class="big reveal">Same $1, 2023→2026. The agent holds the major coins that are trending — BTC, ETH, BNB, SOL — and sits in stablecoins for the rest. In for the uptrends, out for the crashes. Pick the window:</p>
+      <p class="big reveal">Same $1, 2023→2026: the trend basket vs just holding the same four coins. Pick the window:</p>
 
       <!-- MA WINDOW TOGGLE -->
       <div class="lev-toggle reveal" role="group" aria-label="Moving-average window">
@@ -174,7 +157,6 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">Just holding the four also paid in a bull run — but with a <span class="em-red">−61% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.09). Timing them by trend kept drawdown to <span class="em-green">−19%</span> and held an out-of-sample Sharpe of <span class="em-green">2.53</span>. Same coins — the timing is the whole difference.</p>
     </div>
   </section>
 
@@ -231,13 +213,7 @@ for (const c of MAJORS)
     <div class="wrap">
       <div class="beat reveal">The engine</div>
       <h2 class="reveal-words">Built to run on Claude Opus 4.8.</h2>
-      <p class="big reveal">Why this model for an always-on agent that touches money? Three things matter more than raw IQ:</p>
-      <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Reliable tool use.</strong> Opus 4.8 specifically improved tool triggering — it doesn't skip the price, balance, or execute calls a trading tick depends on.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Long-horizon stability.</strong> A 1M-token context and steadier long agent loops mean it doesn't derail over a run that lives for months.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Honest about failure.</strong> It glosses over hidden failures only ~3.7% of the time (per Anthropic's Opus 4.8 announcement) — a money agent has to surface bad data and failed fills, not bury them.</p></div></div>
-      </div>
-      <p class="reveal">And it's <strong>deterministic by design</strong>: structured JSON outputs, behavior driven by explicit rules rather than random sampling. The model orchestrates and explains; the strategy stays a hard rule. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
+      <p class="big reveal">Chosen for what matters in an always-on, money-touching agent: <strong>reliable tool-triggering</strong> (it doesn't skip a price or execute call), <strong>long-horizon stability</strong> (a 1M-token context over month-long runs), and <strong>honesty about failure</strong> — it glosses over hidden failures only ~3.7% of the time (per Anthropic). The model orchestrates and explains; the trade stays a hard rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
     </div>
   </section>
 
