@@ -1,74 +1,60 @@
-# Delta-Neutral Funding-Carry — a CMC Strategy Skill
+# Trend Regime — a CoinMarketCap Strategy Skill
 
-> A CoinMarketCap Agent Skill that earns perpetual **funding** while staying **market-neutral** —
-> and, just as importantly, knows when to sit in stablecoins and do nothing.
+> A CoinMarketCap Agent Skill that follows BTC's trend: **hold BTC while price is above
+> its moving average, move to stablecoins when it drops below.** It rides the uptrends and
+> sits out the deep drawdowns.
 >
 > Built for **BNB HACK: AI Trading Agent Edition** — Track 2 (Strategy Skills).
 
-**🌐 Live overview → [delta-neutral-carry.vercel.app](https://delta-neutral-carry.vercel.app)**
+**🌐 Live overview → [trend-regime.vercel.app](https://trend-regime.vercel.app)**
 
 ## The idea in one line
 
-Hold BTC spot (long) and short the same notional in a BTC perpetual. Price moves cancel
-(**delta ≈ 0**), so the only return left is the funding rate longs pay shorts. Collect it when
-the market pays to carry; step aside when funding turns deeply negative.
+Compare BTC's price to its moving average. Above it → the trend is up, **hold BTC**. Below
+it → the trend has turned, **hold stablecoins**. One rule, two states. No prediction, no
+shorting, no leverage.
 
-This is **risk-premium** income, not price speculation — the one edge a retail agent can
-actually harvest without speed or inside information.
+## Chosen by research, not by guess
 
-## The insight that makes it work
+We backtested **27 strategies across 7 families** on the same data (daily, 2023–2026, 16
+coins, realistic turnover costs), split into in-sample / out-of-sample halves so a strategy
+has to work on data it never saw. **Trend-following won as a whole family** — median
+out-of-sample Sharpe **2.15**, far ahead of momentum (0.44), volatility (0.43), passive
+(0.18), contrarian (0.01) and mean-reversion (−0.38). The "exciting" strategies decayed
+out-of-sample (a Fear & Greed contrarian went 2.09 → 0.02); mean-reversion lost money.
+Full method + table in [`backtest.md`](skills/trend-regime/references/backtest.md).
 
-The naive version of this strategy **loses money**. We found out by backtesting it.
+## Results — trend-following BTC vs buy & hold (2023–2026)
 
-The killer is **turnover**. Any rule that toggles in and out of the carry every time funding
-dips near zero racks up hundreds of trades, and fees + slippage on two legs bleed it dry. The
-strategies that constantly "optimized" their entry lost 6–9%. The strategy that simply **held
-the carry continuously and only bailed on a deeply-negative funding regime** won — with almost
-no trades.
+| Setting | Return (3.4y) | APR | Max DD | Sharpe (OOS) |
+|---------|--------------:|----:|-------:|-------------:|
+| Trend BTC · 50-day | +2193% | 150% | −15% | 3.22 |
+| **Trend BTC · 100-day (default)** | **+872%** | **94%** | **−17%** | **2.27** |
+| Trend BTC · 200-day | +471% | 66% | −21% | 1.60 |
+| *buy & hold BTC* | +265% | 46% | **−51%** | 0.23 |
 
-So the rule isn't "time the funding." It's **"hold the carry; minimize turnover; only step
-aside when funding genuinely turns against you."** That was *discovered* in the data, not assumed.
-
-## Results — 3.4-year backtest (2023-01-01 → 2026-06-03)
-
-Funding on BTC was positive **85.9%** of the time (mean **7.41% APR**).
-
-| Strategy | Return | APR | Max DD | Sharpe | Trades |
-|----------|-------:|----:|-------:|-------:|-------:|
-| **This skill** (hold; exit only if funding < −15% APR) | **+19.35%** | **5.31%** | **−0.35%** | **25.5** | **2** |
-| harvest (enter >2% APR, exit <0) | −6.51% | −1.95% | −10.08% | −2.9 | 456 |
-| always-on (any positive funding) | −9.44% | −2.86% | −11.93% | −4.1 | 514 |
-| "smart" overlay (8%/3% + greed guard) | −6.86% | −2.06% | −8.12% | −3.7 | 416 |
-| *benchmark:* buy & hold BTC | +290% | 48.9% | **−49.7%** | 1.1 | 0 |
-
-Read this the right way: buy-and-hold made far more — with a **−50% drawdown**. This skill makes
-a steady ~5% APR with a **−0.35%** max drawdown and a Sharpe of **~25**. Different product, for
-people who want yield without the rollercoaster. Judge it on **risk-adjusted** terms.
-
-![Equity curve](backtest/output/equity_curve.png)
-
-*Flat, rising strategy equity (green) through BTC's full boom-and-crash (grey).*
+> **Read this honestly:** 2023–2026 was net bullish, which inflates every APR here — the
+> headline returns will not repeat. The durable, repeatable edge is the **drawdown cut**
+> (roughly a third of buy-and-hold's) and the **out-of-sample Sharpe** (which held *above*
+> its in-sample value — the opposite of overfitting). Judge it on risk-adjusted terms.
 
 ## How the skill works
 
-The skill is a small **state machine** the agent runs on live CMC data:
+A 2-state machine the agent runs on live CMC data:
 
-1. **Read the signal** — `get_global_crypto_derivatives_metrics` for market-wide funding,
-   open interest, and liquidations; `get_global_metrics_latest` for Fear & Greed; BTC spot price.
-2. **Decide** — `FLAT → ENTER` when annualized funding ≥ +5%; `DEPLOYED → EXIT` only when funding
-   falls below the **−15% circuit breaker**; otherwise **HOLD** (the most common, correct action).
-3. **Report** — a concrete, auditable allocation: deploy %, both legs, the single trigger that
-   would change the position.
+1. **Read** — BTC price (`get_crypto_quotes_latest`) and its moving average
+   (`get_crypto_technical_analysis`); Fear & Greed (`get_global_metrics_latest`) for context.
+2. **Decide** — `price > MA → RISK-ON` (hold BTC); `price < MA → RISK-OFF` (hold cash); a
+   small dead-band around the MA prevents whipsaw flips.
+3. **Report** — the regime, the position, and the exact MA price level that flips it.
 
-CMC only exposes **aggregate** funding (no per-asset figure — see
-[`data-sources.md`](skills/delta-neutral-carry/references/data-sources.md)), so the skill
-deliberately uses aggregate funding as a *regime signal* and runs the carry on the single
-deepest-liquidity leg (BTC). Simpler, more robust, fully CMC-native.
+The one real parameter is the MA window (default **100-day**; 50-day is more active, 200-day
+calmer). Everything else is fixed, so the strategy is deterministic and backtestable.
 
 ## Install (Claude Desktop / any Claude-skill host)
 
 ```bash
-cp -r skills/delta-neutral-carry /path/to/your/skills/directory/
+cp -r skills/trend-regime /path/to/your/skills/directory/
 ```
 
 Then connect the CoinMarketCap MCP (get a key at https://pro.coinmarketcap.com/login):
@@ -84,38 +70,42 @@ Then connect the CoinMarketCap MCP (get a key at https://pro.coinmarketcap.com/l
 }
 ```
 
-Ask: *"Should I be in a funding carry right now?"* or `/delta-neutral-carry`.
+Ask: *"Is BTC above its trend right now?"* or `/trend-regime`.
 
-## Reproduce the backtest
+## Reproduce the research
 
 ```bash
-python -m venv .venv && ./.venv/bin/pip install pandas numpy matplotlib requests
-./.venv/bin/python backtest/backtest.py
+python -m venv .venv && ./.venv/bin/pip install pandas numpy requests
+./.venv/bin/python backtest/research_strategies.py   # the full 27-strategy sweep, IS/OOS
+./.venv/bin/python backtest/compare_strategies.py    # head-to-head shortlist
 ```
 
-All data is fetched free, no API key (Binance funding/klines + alternative.me Fear & Greed).
-Outputs land in `backtest/output/`.
+All data is fetched free, no API key (Binance daily klines + alternative.me Fear & Greed),
+and cached after the first run.
 
 ## Repo structure
 
 ```
-skills/delta-neutral-carry/
+skills/trend-regime/
   SKILL.md                     the strategy as deterministic rules (the deliverable)
   references/
-    data-sources.md           exactly what CMC exposes for funding (and what it doesn't)
-    backtest.md                method, full results, and honest limits
+    backtest.md                the 27-strategy sweep, IS/OOS split, and results
+    data-sources.md            exactly which CMC reads the skill uses
 backtest/
-  backtest.py                  runnable validation over 3.4 years of real data
-  output/equity_curve.png      the chart above
+  research_strategies.py       27-strategy sweep with in-sample / out-of-sample split
+  compare_strategies.py        head-to-head comparison
+  make_trend_data.py           exports the landing's chart data
+site/                          the live overview at trend-regime.vercel.app
 ```
 
 ## Honest limits
 
-The backtest assumes a **perfect hedge**. Live, there's basis drift, funding-timing slip, and
-short-leg liquidation risk if margin isn't actively defended — so real net returns sit below the
-~5% APR shown. Execution venue is **ApolloX** on BSC (spot on PancakeSwap), whose funding and
-liquidity differ from the Binance data used as a historical proxy. Full caveats in
-[`backtest.md`](skills/delta-neutral-carry/references/backtest.md).
+Trend-following **whipsaws** in choppy markets — shaken out low, bought back high. It always
+lags the exact top and bottom. The backtest uses daily Binance data with costs applied, but
+live slippage, gas, and timing differ. The 2023–2026 window was bullish, which flatters any
+long/trend strategy. It is **directional** (full BTC price risk when RISK-ON) — it shrinks
+drawdowns versus holding, it does not remove them. Full caveats in
+[`backtest.md`](skills/trend-regime/references/backtest.md).
 
 ---
 
