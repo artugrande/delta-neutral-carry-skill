@@ -46,7 +46,13 @@
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
       <h1 class="reveal-words">Hold the majors in uptrends. <span class="g">Cash in downtrends.</span></h1>
-      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — BTC, ETH, BNB, SOL — and steps aside to stablecoins for the rest. We tested 30 strategies; this one caught the rallies and dodged the −50% crashes.</p>
+      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — and steps aside to stablecoins for the rest. We tested 30 strategies; this one caught the rallies and dodged the −50% crashes.</p>
+      <div class="coins-row reveal">
+        <span class="coin-pill"><img src="assets/coins/btc.png" alt="" /><span>BTC</span></span>
+        <span class="coin-pill"><img src="assets/coins/eth.png" alt="" /><span>ETH</span></span>
+        <span class="coin-pill"><img src="assets/coins/bnb.png" alt="" /><span>BNB</span></span>
+        <span class="coin-pill"><img src="assets/coins/sol.png" alt="" /><span>SOL</span></span>
+      </div>
       <div class="powered reveal">
         <div class="pwr">
           <img src="assets/coinmarketcappng.png" alt="CoinMarketCap" />
@@ -190,30 +196,40 @@
   <!-- RUN IT AUTONOMOUSLY -->
   <section id="agent" data-screen-label="Autonomous agent">
     <div class="wrap">
-      <div class="beat reveal">Hands-off</div>
-      <h2 class="reveal-words">Or hand it to an agent on Vercel.</h2>
-      <p class="big reveal">Run it by hand, or let one scheduled function do the whole loop — nobody triggers a trade manually.</p>
+      <div class="beat reveal">Run it autonomously</div>
+      <h2 class="reveal-words">Give it a wallet. It trades for you.</h2>
+      <p class="big reveal">Not a notifier — an agent with <strong>its own private key</strong> that places the swaps itself, no human in the loop. How you'd build it on BNB Chain:</p>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Vercel Cron</strong> fires daily and calls one serverless function. That's the only trigger.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p>It pulls each major's <strong>price + moving average</strong> from the CoinMarketCap MCP (via the Vercel AI SDK), runs the rule <strong>in code</strong> — not the model, so it's reproducible — and sizes the equal-weight book.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p>On a regime <strong>flip only</strong>, it sends a Telegram alert and — if you opt in — executes the swap. <strong>It never holds your keys.</strong></p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Give it its own wallet.</strong> Generate a fresh keypair and fund it with your capital plus a little BNB for gas. It's a hot wallet — only what you'd risk. The private key lives in the agent's encrypted env vars.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Schedule the tick.</strong> A <strong>daily</strong> cron is enough — the rule reads a <em>daily</em> moving average, so checking hourly would just re-read the same candle. Each tick pulls the four majors' price + MA from the CoinMarketCap MCP and computes the target allocation in code.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Read its own holdings.</strong> With <code>viem</code> it reads the wallet's balances on BNB Chain — so it knows what it's holding versus what the rule wants.</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>It trades itself.</strong> For each coin that flipped — entered or left the basket — it builds, signs, and sends a <strong>PancakeSwap</strong> swap with its own key. No notification, no human.</p></div></div>
+        <div class="step reveal" data-i="4"><div class="n">05</div><div class="b"><p><strong>Cost stays low.</strong> Swaps fire only on a regime <strong>flip</strong> — a handful per coin per year — so gas is rare; the daily check itself is basically free.</p></div></div>
       </div>
-      <pre class="reveal"><code>// vercel.json — the only scheduler
-"crons": [{ "path": "/api/trend-tick", "schedule": "0 12 * * *" }]
-
-// api/trend-tick.js — the decision is plain code, not the LLM
-for (const c of MAJORS)
-  target[c] = price[c] > movingAvg[c] ? "HOLD" : "CASH";</code></pre>
-      <p class="reveal">Built on Vercel's agent stack — <a class="ln" href="https://vercel.com/docs/cron-jobs">Cron</a>, <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools">AI SDK MCP client</a> and the <a class="ln" href="https://vercel.com/docs/ai-gateway">AI Gateway</a>. The demo runs <strong>notify-only (paper trade)</strong>; live execution is the same code path, opt-in.</p>
+      <pre class="reveal"><code>// daily cron — the agent's OWN key signs every swap, no human in the loop
+const account = privateKeyToAccount(process.env.AGENT_PRIVATE_KEY);
+const target  = decide(pricesAndMAs);               // the rule, in code
+const held    = await readBalances(account);        // current on-chain holdings
+for (const coin of ["BTC", "ETH", "BNB", "SOL"])
+  if (target[coin] !== held[coin])                  // only on a flip
+    await pancakeSwap(account, coin, target[coin]); // signs + sends the tx</code></pre>
+      <p class="reveal">Built on <a class="ln" href="https://vercel.com/docs/cron-jobs">Vercel Cron</a> + <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://vercel.com/docs/mcp">CoinMarketCap MCP</a>, and <a class="ln" href="https://viem.sh">viem</a> for signing. <span class="em-red">A hot key holding real funds is a real risk</span> — run it dry first, and use a dedicated low-balance wallet, slippage caps, and a kill switch.</p>
     </div>
   </section>
 
   <!-- BUILT WITH CLAUDE -->
   <section id="engine" data-screen-label="The engine">
     <div class="wrap">
-      <div class="beat reveal">The engine</div>
-      <h2 class="reveal-words">Built to run on Claude Opus 4.8.</h2>
-      <p class="big reveal">Chosen for what matters in an always-on, money-touching agent: <strong>reliable tool-triggering</strong> (it doesn't skip a price or execute call), <strong>long-horizon stability</strong> (a 1M-token context over month-long runs), and <strong>honesty about failure</strong> — it glosses over hidden failures only ~3.7% of the time (per Anthropic). The model orchestrates and explains; the trade stays a hard rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
+      <div class="beat reveal">How this was built</div>
+      <h2 class="reveal-words">Built end-to-end with Claude Opus 4.8.</h2>
+      <p class="big reveal">The 30-strategy backtest, the out-of-sample validation, the skill, this site, and the agent above — all built with <strong>Claude Opus 4.8</strong>. Why it's the right model to design a strategy like this:</p>
+      <div class="steps">
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Agentic coding &amp; tool use.</strong> It ran the backtests itself and wired the CoinMarketCap MCP — iterating on real numbers, not pseudocode.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Long-horizon reasoning.</strong> It held the whole research thread — 30 strategies, in-sample vs out-of-sample — coherent across a long build, on a 1M-token context, without losing the plot.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Rigor over hype.</strong> It pushed for out-of-sample validation, flagged overfitting, and refused to quote benchmarks it couldn't verify (it glosses over hidden failures only ~3.7% of the time, per Anthropic).</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>From idea to spec.</strong> It turned a fuzzy "follow the trend" into an explicit, deterministic, backtestable rule.</p></div></div>
+      </div>
+      <p class="reveal">The model does the research and the building; the strategy itself stays a hard rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
     </div>
   </section>
 

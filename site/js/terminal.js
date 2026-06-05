@@ -54,10 +54,10 @@
 
     // 3. signal rows (staggered)
     var rows = [
-      ['BTC · vs 100-day avg', 'below ▼', 'neg'],
-      ['ETH · vs 100-day avg', 'below ▼', 'neg'],
-      ['BNB · vs 100-day avg', 'below ▼', 'neg'],
-      ['SOL · vs 100-day avg', 'below ▼', 'neg'],
+      ['<img class="coin" src="assets/coins/btc.png" alt="">BTC · vs 100-day avg', 'below ▼', 'neg'],
+      ['<img class="coin" src="assets/coins/eth.png" alt="">ETH · vs 100-day avg', 'below ▼', 'neg'],
+      ['<img class="coin" src="assets/coins/bnb.png" alt="">BNB · vs 100-day avg', 'below ▼', 'neg'],
+      ['<img class="coin" src="assets/coins/sol.png" alt="">SOL · vs 100-day avg', 'below ▼', 'neg'],
       ['fear &amp; greed index', '18 · Extreme Fear', 'neg']
     ];
     for (var i = 0; i < rows.length; i++) {
@@ -89,10 +89,10 @@
     line('<span class="prompt">$ </span><span class="q">Should I be holding BTC right now?</span>');
     line('&nbsp;');
     line('<span class="dim">→ reading live CoinMarketCap data…</span>');
-    row('BTC · vs 100-day avg', 'below ▼', 'neg');
-    row('ETH · vs 100-day avg', 'below ▼', 'neg');
-    row('BNB · vs 100-day avg', 'below ▼', 'neg');
-    row('SOL · vs 100-day avg', 'below ▼', 'neg');
+    row('<img class="coin" src="assets/coins/btc.png" alt="">BTC · vs 100-day avg', 'below ▼', 'neg');
+    row('<img class="coin" src="assets/coins/eth.png" alt="">ETH · vs 100-day avg', 'below ▼', 'neg');
+    row('<img class="coin" src="assets/coins/bnb.png" alt="">BNB · vs 100-day avg', 'below ▼', 'neg');
+    row('<img class="coin" src="assets/coins/sol.png" alt="">SOL · vs 100-day avg', 'below ▼', 'neg');
     row('fear &amp; greed index', '18 · Extreme Fear', 'neg');
     line('&nbsp;');
     line('<span class="dim">→ trending up: <span class="neg">0 of 4 majors</span> · regime RISK-OFF</span>');

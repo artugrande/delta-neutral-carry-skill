@@ -215,6 +215,14 @@ em { font-style: italic; color: #e2e2e2; }
 .fam-row .fam-val.bad { color: var(--red); }
 .caption { font-size: 14px; color: var(--dim); font-style: italic; max-width: 100%; }
 
+/* ---------- COIN ICONS ---------- */
+.coins-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.coin-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 100px; padding: 6px 14px 6px 7px; background: rgba(10,10,10,.4); transition: border-color .2s ease, transform .2s ease; }
+.coin-pill:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
+.coin-pill img { width: 22px; height: 22px; display: block; }
+.coin-pill span { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--fg); }
+.coin { width: 16px; height: 16px; vertical-align: -3px; margin-right: 7px; display: inline-block; }
+
 /* ---------- LEVERAGE TOGGLE ---------- */
 .lev-toggle { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin: 26px 0 4px; }
 .lev-toggle .lev-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
