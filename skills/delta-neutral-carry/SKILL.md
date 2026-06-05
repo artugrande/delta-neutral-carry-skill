@@ -70,12 +70,28 @@ Get an API key at https://pro.coinmarketcap.com/login
 | `REENTRY_APR` | 5% | (Re)enter the carry when aggregate funding APR ≥ this |
 | `BREAKER_APR` | −15% | Circuit breaker: exit to stablecoin when funding APR falls below this |
 | `MARGIN_BUFFER` | 30% | Stablecoin reserved to defend the short leg's margin |
+| `LEVERAGE` | 1× | Optional multiplier on the carry notional (1× / 2× / 5×) — see below |
 | `STRESS_GUARD` | off | Live-only safety (see Step 3); off in the return-optimal config |
 
 > Funding is usually quoted per 8h interval. Annualize with: `APR = funding_8h × 3 × 365`.
 > The wide gap between `REENTRY_APR` (+5%) and `BREAKER_APR` (−15%) is deliberate hysteresis:
 > it keeps the position stable and the trade count near zero. Do not narrow it to "optimize"
 > entries — the backtest shows that destroys returns via turnover.
+
+### Leverage (optional, off by default)
+
+Because the position is delta-neutral (no price exposure), the carry notional can be levered
+to raise the yield. `LEVERAGE` multiplies the deployed notional on **both** legs equally, so
+delta stays ≈ 0. Backtested net (after a ~4% financing cost on the borrowed notional, 3.4-year
+window): **1× → 5.3% APR / −0.35% maxDD**, **2× → 7.9% APR / −1.4% maxDD**, **5× → 15.8% APR /
+−4.5% maxDD**. Returns and drawdown scale together; risk-adjusted return (Sharpe) actually
+*falls* with leverage (≈25 → 19 → 15) because financing is a drag and the curve gets bumpier —
+leverage is **not** free yield.
+
+Default is **1× (unlevered)**: the idealized backtest cannot see liquidation risk, which is
+the real danger of leverage. A sharp adverse move can liquidate the levered short before the
+hedging spot gain can be moved to defend it. If `LEVERAGE > 1`, widen `MARGIN_BUFFER`
+accordingly and treat the strategy as materially riskier than the smooth equity curve implies.
 
 ## Decision Workflow
 

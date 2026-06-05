@@ -105,34 +105,41 @@
       <h2 class="reveal-words">Turnover kills the carry. We discovered it in the data.</h2>
       <p class="big reveal">The "smart" versions that jump in and out chasing funding <span class="em-red">all lose money</span> — fees on two legs bleed them dry. The winner simply holds the position and only exits on a panic circuit-breaker.</p>
 
-      <div class="chart reveal" id="chart">
-        <div class="chart-fallback" id="chartFallback"><img src="assets/equity_curve.png" alt="Backtest 2023-2026: strategy equity vs BTC price." /></div>
+      <!-- LEVERAGE TOGGLE -->
+      <div class="lev-toggle reveal" role="group" aria-label="Leverage selector">
+        <span class="lev-label">Leverage</span>
+        <button type="button" class="lev-btn active" data-lev="1">1×</button>
+        <button type="button" class="lev-btn" data-lev="2">2×</button>
+        <button type="button" class="lev-btn" data-lev="5">5×</button>
       </div>
-      <p class="caption reveal">Dual axis: BTC price in USD (grey, left) vs the strategy's equity, start = 1.0 (green, right). The strategy compounds smoothly to +19% while BTC rips to $125k and gives half of it back — same period, two very different rides.</p>
 
-      <!-- STAT STRIP -->
+      <div class="chart reveal" id="chart">
+        <div class="chart-fallback" id="chartFallback"><img src="assets/equity_curve.png" alt="Strategy equity vs a stablecoin-lending benchmark, 2023-2026." /></div>
+      </div>
+      <p class="caption reveal">Growth of $1 over 3.4 years, market-neutral. Green = the carry at the selected leverage; dotted = passive stablecoin lending (~5% APR) for reference. A delta-neutral book carries no price risk, so leverage just dials the return up — drawdown scales with it, but stays a world away from a directional bet.</p>
+
+      <!-- STAT STRIP (updates with the leverage toggle) -->
       <div class="statstrip">
-        <div class="stat reveal" data-i="0"><div class="sv"><span class="count" data-to="19.35" data-dec="2" data-prefix="+" data-suffix="%">+19.35%</span></div><div class="sl">Total return</div></div>
-        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" data-to="5.31" data-dec="2" data-suffix="%">5.31%</span></div><div class="sl">APR</div></div>
-        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" data-to="-0.35" data-dec="2" data-suffix="%">−0.35%</span></div><div class="sl">Max drawdown</div></div>
-        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" data-to="25.5" data-dec="1">25.5</span></div><div class="sl">Sharpe ratio</div></div>
+        <div class="stat reveal" data-i="0"><div class="sv"><span class="count" id="stat-ret" data-to="19.35" data-dec="2" data-prefix="+" data-suffix="%">+19.35%</span></div><div class="sl">Total return · 3.4 yrs</div></div>
+        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" id="stat-apr" data-to="5.31" data-dec="2" data-suffix="%">5.31%</span></div><div class="sl">APR · per year</div></div>
+        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" id="stat-dd" data-to="-0.35" data-dec="2" data-suffix="%">−0.35%</span></div><div class="sl">Max drawdown</div></div>
+        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" id="stat-sharpe" data-to="25.5" data-dec="1">25.5</span></div><div class="sl">Sharpe ratio</div></div>
       </div>
 
       <div class="tablewrap reveal">
         <table>
           <thead>
-            <tr><th>Strategy</th><th>Return</th><th>APR</th><th>Max DD</th><th>Sharpe</th><th>Trades</th></tr>
+            <tr><th>Setting</th><th>Return · 3.4y</th><th>APR / yr</th><th>Max DD</th><th>Sharpe</th></tr>
           </thead>
-          <tbody>
-            <tr class="skill"><td>This skill</td><td>+19.35%</td><td>5.31%</td><td>−0.35%</td><td>25.5</td><td>2</td></tr>
-            <tr><td>harvest (chase funding)</td><td class="neg">−6.51%</td><td class="neg">−1.95%</td><td class="neg">−10.08%</td><td class="neg">−2.9</td><td>456</td></tr>
-            <tr><td>always-on</td><td class="neg">−9.44%</td><td class="neg">−2.86%</td><td class="neg">−11.93%</td><td class="neg">−4.1</td><td>514</td></tr>
-            <tr><td>"smart" overlay</td><td class="neg">−6.86%</td><td class="neg">−2.06%</td><td class="neg">−8.12%</td><td class="neg">−3.7</td><td>416</td></tr>
-            <tr class="bench"><td>buy &amp; hold BTC</td><td class="pos">+290%</td><td>48.9%</td><td class="neg">−49.7%</td><td>1.1</td><td>0</td></tr>
+          <tbody id="levTableBody">
+            <tr data-lev="1" class="skill"><td>1× — no leverage</td><td>+19.35%</td><td>5.31%</td><td class="neg">−0.35%</td><td>25.5</td></tr>
+            <tr data-lev="2"><td>2× leverage</td><td>+29.49%</td><td>7.85%</td><td class="neg">−1.38%</td><td>18.6</td></tr>
+            <tr data-lev="5"><td>5× leverage</td><td>+65.34%</td><td>15.84%</td><td class="neg">−4.45%</td><td>14.5</td></tr>
+            <tr class="bench"><td>Stablecoin lending (~5%)</td><td>+18.2%</td><td>5.00%</td><td>0.00%</td><td>—</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal">Read it the right way: buy-and-hold made far more — with a <span class="em-red">−50% drawdown</span>. This skill makes a steady <span class="em-green">~5% APR</span> with a <strong>−0.35%</strong> max drawdown and a Sharpe of <strong>~25</strong>. A different product, for people who want yield without the rollercoaster. Judge it on <strong>risk-adjusted</strong> terms.</p>
+      <p class="reveal">Read it the right way: this isn't a Bitcoin-beater — it's a <span class="em-green">market-neutral</span> yield engine. Unlevered it roughly matches passive stablecoin lending; because there's no price risk you can lever it to clearly beat that, while max drawdown stays in low single digits. Judge it on <strong>risk-adjusted</strong> terms — Sharpe and drawdown, not raw return. <span class="em-red">Leverage also adds liquidation risk</span> the idealized backtest can't see — see the disclaimer.</p>
     </div>
   </section>
 
@@ -212,6 +219,7 @@
         <div class="hd">Not financial advice — you bear your own risk</div>
         <p>This project is an educational research tool built for a hackathon. Nothing here is financial, investment, or trading advice, and nothing is a recommendation to buy, sell, or hold any asset. You are <strong>solely responsible</strong> for your own decisions, your own funds, and your own risk.</p>
         <p>A delta-neutral funding carry is <strong>not risk-free</strong>. Real risks include short-leg liquidation, funding turning negative, basis drift between spot and perp, stablecoin de-peg, smart-contract and venue failure, and slippage. The backtest assumes a perfect hedge and historical Binance data as a proxy for on-chain venues; live results will differ and can be negative. Past performance does not predict future results.</p>
+        <p><strong>Leverage multiplies both gains and losses</strong> and adds real liquidation risk that this idealized, perfect-hedge backtest does not capture. The 2× and 5× curves shown are far riskier than their smooth lines suggest — a sharp adverse move can wipe the margin and close the position at a loss. Higher leverage is not "more free yield."</p>
         <p>Do your own research. Only deploy capital you can afford to lose.</p>
       </div>
     </div>
@@ -227,7 +235,7 @@
   <script src="js/shader.js"></script>
   <script src="js/reveal.js"></script>
   <script src="js/terminal.js"></script>
-  <script src="js/chart.js"></script>
+  <script src="js/leverage-chart.js"></script>
 
   <style id="__om-edit-overrides"></style>
 </body>
