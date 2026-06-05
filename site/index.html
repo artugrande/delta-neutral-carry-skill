@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Delta-Neutral Carry — a CoinMarketCap Strategy Skill</title>
-  <meta name="description" content="A CoinMarketCap Agent Skill that earns perpetual funding while staying market-neutral — and knows when to sit in stablecoins and do nothing." />
+  <meta name="description" content="A CoinMarketCap Agent Skill that runs a delta-neutral BTC carry — long spot, short perp — to collect the perpetual funding rate with no price exposure." />
   <link rel="icon" type="image/svg+xml" href="assets/DNCLOGOSVG.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,8 +45,8 @@
   <header class="hero" id="top" data-screen-label="Hero">
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
-      <h1 class="reveal-words">A fund that earns while you sleep — and knows when <span class="g">not to trade.</span></h1>
-      <p class="lead reveal">Delta-Neutral Carry is a CoinMarketCap Agent Skill. It harvests perpetual funding without betting on whether the market goes up or down — and steps aside into stablecoins the moment that edge stops paying.</p>
+      <h1 class="reveal-words">Collect the funding rate. <span class="g">Not the price.</span></h1>
+      <p class="lead reveal">A CoinMarketCap Agent Skill that runs a delta-neutral BTC carry — long spot, short perp — to collect the perpetual funding rate. It reads live CMC data and decides when funding is worth collecting, and when to sit in stablecoins.</p>
       <div class="powered reveal">
         <div class="pwr">
           <img src="assets/coinmarketcappng.png" alt="CoinMarketCap" />
@@ -67,13 +67,13 @@
     <div class="wrap">
       <div class="beat reveal">Beat 02 — What it is</div>
       <h2 class="reveal-words">You buy spot. You short the perp. Price risk cancels out.</h2>
-      <p class="big reveal">Buy the asset on spot and short the same size on a perpetual. Your exposure to price nets to zero. So where's the return? The <strong>funding rate</strong> — in a bull market, longs pay shorts every eight hours, and you collect it.</p>
+      <p class="big reveal">Hold $10k of BTC spot, short $10k of BTC on a perpetual. If BTC moves, the two legs cancel — your price P&amp;L is ~zero. What's left is the <strong>funding rate</strong>: the fee longs pay shorts on perps, settled every 8 hours. When it's positive, you (the short) collect it.</p>
       <div class="legs">
         <div class="leg long reveal" data-i="0"><div class="t">Spot leg</div><div class="v">+1 BTC long</div><div class="leg-glow"></div></div>
         <div class="leg short reveal" data-i="1"><div class="t">Perp leg</div><div class="v">−1 BTC short</div><div class="leg-glow"></div></div>
         <div class="leg eq reveal" data-i="2"><div class="t">Net price exposure</div><div class="v">Delta ≈ 0 → return = funding</div><div class="leg-glow"></div></div>
       </div>
-      <p class="reveal">This is <strong>risk-premium income, not price speculation</strong> — the one edge a retail agent can actually harvest without speed or inside information.</p>
+      <p class="reveal">On BTC, funding has been positive <strong>~86% of the time</strong> since 2023, averaging <strong>~7% annualized</strong>. That's the yield this captures — paid for taking the other side of leverage demand, not for predicting price.</p>
     </div>
   </section>
 
@@ -81,8 +81,8 @@
   <section id="live" data-screen-label="Live moment">
     <div class="wrap">
       <div class="beat reveal">Beat 03 — The live moment</div>
-      <h2 class="reveal-words">The smart part: it knows when <span class="g">not</span> to trade.</h2>
-      <p class="big reveal">Ask it live, with real CoinMarketCap data:</p>
+      <h2 class="reveal-words">Most of the time, the call is <span class="g">do nothing.</span></h2>
+      <p class="big reveal">Ask it live, against real CoinMarketCap data:</p>
 
       <!-- LIVE TERMINAL WIDGET -->
       <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a HOLD verdict because funding is negative during Extreme Fear.">
@@ -94,7 +94,7 @@
         <div class="term-body" id="termBody"></div>
       </div>
 
-      <p class="reveal">Right now funding is <span class="em-red">negative</span>, in the middle of <strong>Extreme Fear</strong>. The Skill does <strong>not</strong> enter — it says <span class="em-green">HOLD, stay in stablecoins.</span> A naive yield bot would pile in anyway and lose money. This one knows the premium isn't paying, so it waits. <strong>That's rule adherence.</strong></p>
+      <p class="reveal">Funding is <span class="em-red">−8% annualized</span> and the market is in <strong>Extreme Fear</strong>. Entry needs ≥ +5%, so the output is <span class="em-green">HOLD — stay in stablecoins.</span> Entering here would mean paying to hold the position. The skill follows the rule and waits.</p>
     </div>
   </section>
 
@@ -103,7 +103,7 @@
     <div class="wrap">
       <div class="beat reveal">Beat 04 — The insight, proven</div>
       <h2 class="reveal-words">Turnover kills the carry. We discovered it in the data.</h2>
-      <p class="big reveal">The "smart" versions that jump in and out chasing funding <span class="em-red">all lose money</span> — fees on two legs bleed them dry. The winner simply holds the position and only exits on a panic circuit-breaker.</p>
+      <p class="big reveal">Versions that chase funding — entering and exiting as it wobbles around zero — <span class="em-red">all lose money</span>. Two legs, fees each way, hundreds of trades: the friction eats the yield. The version that wins holds the position and only exits on a deep-negative circuit breaker. <strong>2 trades in 3.4 years.</strong></p>
 
       <!-- LEVERAGE TOGGLE -->
       <div class="lev-toggle reveal" role="group" aria-label="Leverage selector">
@@ -139,7 +139,7 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">Read it the right way: this isn't a Bitcoin-beater — it's a <span class="em-green">market-neutral</span> yield engine. Unlevered it roughly matches passive stablecoin lending; because there's no price risk you can lever it to clearly beat that, while max drawdown stays in low single digits. Judge it on <strong>risk-adjusted</strong> terms — Sharpe and drawdown, not raw return. <span class="em-red">Leverage also adds liquidation risk</span> the idealized backtest can't see — see the disclaimer.</p>
+      <p class="reveal">This is not a Bitcoin-beater. It's a <span class="em-green">market-neutral</span> position: ~5% a year unlevered, about the same as stablecoin lending — but with no price exposure. Because there's no price risk you can lever it: 5× returns ~16% a year at a −4.5% max drawdown. Judge it on <strong>Sharpe and drawdown</strong>, not raw return. <span class="em-red">Leverage adds liquidation risk</span> the backtest can't model — see the disclaimer.</p>
     </div>
   </section>
 
@@ -186,7 +186,7 @@
     <div class="wrap">
       <div class="beat reveal">From signal to position</div>
       <h2 class="reveal-words">How you'd actually run the carry.</h2>
-      <p class="big reveal">The Skill is the <strong>research desk</strong>, not the trader. It reads the market and tells you <em>what</em> and <em>when</em> — you stay in control of your own funds and execute the trade. Here's the full loop.</p>
+      <p class="big reveal">The skill decides; you execute. It reads the market and outputs the action — it never touches your funds. The full loop:</p>
 
       <div class="steps">
         <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Should I be in a funding carry right now?" It returns a clear call — <span class="em-green">ENTER</span>, <strong>HOLD</strong>, or <span class="em-red">EXIT</span> — with a deploy size and the single trigger that would change it.</p></div></div>
@@ -207,8 +207,8 @@
   <section class="close" data-screen-label="Close">
     <div class="wrap">
       <div class="beat reveal">Beat 05 — Close</div>
-      <h2 class="reveal-words" style="max-width:620px">Quant research, democratized.</h2>
-      <p class="big reveal">All powered by CoinMarketCap data. An installable, auditable, deterministic Skill — anyone runs it and gets the same result. An agent that knows when to harvest… <span class="em-green">and when to wait.</span></p>
+      <h2 class="reveal-words" style="max-width:620px">No black box.</h2>
+      <p class="big reveal">Explicit rules in a <code>SKILL.md</code>. A 3.4-year backtest you can re-run yourself. A live signal from CoinMarketCap data. Same inputs, <span class="em-green">same output, every time.</span></p>
     </div>
   </section>
 
