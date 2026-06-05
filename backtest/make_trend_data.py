@@ -14,6 +14,7 @@ import research_strategies as rs
 OUT = os.path.join(os.path.dirname(HERE), "site", "assets", "trend_data.json")
 WINDOWS = [50, 100, 200]
 DEFAULT = 100
+MAJORS = ["BTC", "ETH", "BNB", "SOL"]   # equal-weight trend basket
 
 
 def main():
@@ -58,7 +59,8 @@ def main():
     print(f"  {'window':8s} {'ret':>8s} {'APR':>7s} {'maxDD':>7s} {'Sharpe':>7s} {'OOS':>6s} {'t/yr':>5s} {'in-mkt':>7s}")
     for ma in WINDOWS:
         w = zeros()
-        w["BTC"] = (btc > btc.rolling(ma).mean()).fillna(False).astype(float).values
+        for c in MAJORS:
+            w[c] = (panel[c] > panel[c].rolling(ma).mean()).fillna(False).astype(float).values / len(MAJORS)
         daily, turn, invested = rs.to_daily(w, rets)
         eq = (1 + daily).cumprod()
         tot, apr, mdd, shp = rs.perf(daily)

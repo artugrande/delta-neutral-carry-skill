@@ -43,7 +43,7 @@
     var p = line('', 'q');
     var prompt = el('span', 'prompt', '$ ');
     p.appendChild(prompt);
-    var cur = await typeInto(p, 'Should I be holding BTC right now?', 36);
+    var cur = await typeInto(p, 'Which majors are trending right now?', 36);
     await wait(420);
     cur.remove();
 
@@ -54,11 +54,11 @@
 
     // 3. signal rows (staggered)
     var rows = [
-      ['btc spot', '$64,210', 'k'],
-      ['100-day average', '$72,800', 'k'],
-      ['price vs trend', '−11.8%  ▼', 'neg'],
-      ['fear &amp; greed index', '18 · Extreme Fear', 'neg'],
-      ['trend signal', 'DOWN', 'neg']
+      ['BTC · vs 100-day avg', 'below ▼', 'neg'],
+      ['ETH · vs 100-day avg', 'below ▼', 'neg'],
+      ['BNB · vs 100-day avg', 'below ▼', 'neg'],
+      ['SOL · vs 100-day avg', 'below ▼', 'neg'],
+      ['fear &amp; greed index', '18 · Extreme Fear', 'neg']
     ];
     for (var i = 0; i < rows.length; i++) {
       var rr = row(rows[i][0], rows[i][1], rows[i][2]);
@@ -70,16 +70,16 @@
 
     await wait(300);
     line('&nbsp;');
-    line('<span class="dim">→ regime: <span class="neg">RISK-OFF</span> · price below its 100-day average</span>');
+    line('<span class="dim">→ trending up: <span class="neg">0 of 4 majors</span> · regime RISK-OFF</span>');
     await wait(520);
 
     // 4. verdict
     var v = el('div', 'verdict');
-    v.innerHTML = '<span class="tag">TO CASH</span><span class="txt">BTC is below its trend — move to stablecoins and wait for the uptrend.</span>';
+    v.innerHTML = '<span class="tag">100% CASH</span><span class="txt">No major is trending up — hold stablecoins and wait for the first to reclaim its average.</span>';
     body.appendChild(v);
     setTimeout(function () { v.classList.add('show'); }, 16);
     await wait(700);
-    var t = line('<span class="dim">next action → <span class="pos">BUY BTC</span> when price closes back above its 100-day average</span>');
+    var t = line('<span class="dim">next action → <span class="pos">BUY</span> the first major that closes back above its 100-day average</span>');
     t.style.opacity = 0; t.style.transition = 'opacity .4s ease';
     setTimeout(function () { t.style.opacity = 1; }, 16);
   }
@@ -89,17 +89,17 @@
     line('<span class="prompt">$ </span><span class="q">Should I be holding BTC right now?</span>');
     line('&nbsp;');
     line('<span class="dim">→ reading live CoinMarketCap data…</span>');
-    row('btc spot', '$64,210', 'k');
-    row('100-day average', '$72,800', 'k');
-    row('price vs trend', '−11.8%  ▼', 'neg');
+    row('BTC · vs 100-day avg', 'below ▼', 'neg');
+    row('ETH · vs 100-day avg', 'below ▼', 'neg');
+    row('BNB · vs 100-day avg', 'below ▼', 'neg');
+    row('SOL · vs 100-day avg', 'below ▼', 'neg');
     row('fear &amp; greed index', '18 · Extreme Fear', 'neg');
-    row('trend signal', 'DOWN', 'neg');
     line('&nbsp;');
-    line('<span class="dim">→ regime: <span class="neg">RISK-OFF</span> · price below its 100-day average</span>');
+    line('<span class="dim">→ trending up: <span class="neg">0 of 4 majors</span> · regime RISK-OFF</span>');
     var v = el('div', 'verdict show');
-    v.innerHTML = '<span class="tag">TO CASH</span><span class="txt">BTC is below its trend — move to stablecoins and wait for the uptrend.</span>';
+    v.innerHTML = '<span class="tag">100% CASH</span><span class="txt">No major is trending up — hold stablecoins and wait for the first to reclaim its average.</span>';
     body.appendChild(v);
-    line('<span class="dim">next action → <span class="pos">BUY BTC</span> when price closes back above its 100-day average</span>');
+    line('<span class="dim">next action → <span class="pos">BUY</span> the first major that closes back above its 100-day average</span>');
   }
 
   var started = false;

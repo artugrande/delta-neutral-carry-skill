@@ -45,8 +45,8 @@
   <header class="hero" id="top" data-screen-label="Hero">
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
-      <h1 class="reveal-words">Hold BTC in uptrends. <span class="g">Cash in downtrends.</span></h1>
-      <p class="lead reveal">A CoinMarketCap skill that holds BTC while it's trending up, and steps aside to stablecoins when it's not. We tested 27 strategies — this one caught the rallies and dodged the −50% crashes.</p>
+      <h1 class="reveal-words">Hold the majors in uptrends. <span class="g">Cash in downtrends.</span></h1>
+      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — BTC, ETH, BNB, SOL — and steps aside to stablecoins for the rest. We tested 27 strategies; this one caught the rallies and dodged the −50% crashes.</p>
       <div class="powered reveal">
         <div class="pwr">
           <img src="assets/coinmarketcappng.png" alt="CoinMarketCap" />
@@ -66,14 +66,14 @@
   <section id="strategy" data-screen-label="What it is">
     <div class="wrap">
       <div class="beat reveal">Beat 02 — What it is</div>
-      <h2 class="reveal-words">Above its trend, hold BTC. Below it, go to cash.</h2>
-      <p class="big reveal">One line — BTC's <strong>moving average</strong> — splits the whole strategy. Price above it: hold BTC. Price below it: hold stablecoins. That's the entire rule.</p>
+      <h2 class="reveal-words">Each major above its trend: hold it. Below: cash.</h2>
+      <p class="big reveal">Every major coin gets one line — its own <strong>moving average</strong>. Above it, the agent holds that coin; below it, that slice sits in stablecoins. Equal-weight whatever's trending. That's the entire rule.</p>
       <div class="legs">
-        <div class="leg long reveal" data-i="0"><div class="t">Price &gt; its average</div><div class="v">Hold BTC</div><div class="leg-glow"></div></div>
-        <div class="leg short reveal" data-i="1"><div class="t">Price &lt; its average</div><div class="v">Move to cash</div><div class="leg-glow"></div></div>
-        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–2026 (100-day)</div><div class="v">More upside, a third of the drawdown</div><div class="leg-glow"></div></div>
+        <div class="leg long reveal" data-i="0"><div class="t">A coin above its average</div><div class="v">Hold it</div><div class="leg-glow"></div></div>
+        <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
+        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +265% holding BTC, far less drawdown</div><div class="leg-glow"></div></div>
       </div>
-      <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes. Over years, that's what compounds.</p>
+      <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes, spread across four liquid majors so no single coin can sink it. Over years, that's what compounds.</p>
     </div>
   </section>
 
@@ -81,11 +81,11 @@
   <section id="live" data-screen-label="Live moment">
     <div class="wrap">
       <div class="beat reveal">Beat 03 — The live moment</div>
-      <h2 class="reveal-words">Live: is BTC above or <span class="g">below its trend?</span></h2>
+      <h2 class="reveal-words">Live: which majors are <span class="g">trending?</span></h2>
       <p class="big reveal">Ask it live, against real CoinMarketCap data:</p>
 
       <!-- LIVE TERMINAL WIDGET -->
-      <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a move-to-cash verdict because BTC is below its 100-day average during Extreme Fear.">
+      <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a 100% cash verdict because no major is above its 100-day average during Extreme Fear.">
         <div class="term-bar">
           <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
           <span class="term-title">trend-regime · live signal</span>
@@ -94,7 +94,7 @@
         <div class="term-body" id="termBody"></div>
       </div>
 
-      <p class="reveal">BTC is <span class="em-red">12% below its 100-day average</span>, in <strong>Extreme Fear</strong>. Trend down → <span class="em-green">stay in stablecoins.</span> No catching the falling knife — it waits for price to reclaim the line, then buys back.</p>
+      <p class="reveal">All four majors are <span class="em-red">below their 100-day averages</span>, in <strong>Extreme Fear</strong>. Nothing's trending up → <span class="em-green">100% stablecoins.</span> No catching the falling knife — it waits for the first major to reclaim its line, then buys that slice.</p>
     </div>
   </section>
 
@@ -122,7 +122,7 @@
           </thead>
           <tbody>
             <tr><td>trend BTC · 50-day</td><td>150%</td><td class="neg">−15%</td><td>2.73</td><td class="pos">3.22</td></tr>
-            <tr class="skill"><td>trend BTC · 100-day ← chosen</td><td>94%</td><td class="neg">−17%</td><td>2.15</td><td class="pos">2.27</td></tr>
+            <tr class="skill"><td>trend BTC · 100-day ← best single coin</td><td>94%</td><td class="neg">−17%</td><td>2.15</td><td class="pos">2.27</td></tr>
             <tr><td>trend BTC · 200-day</td><td>66%</td><td class="neg">−21%</td><td>1.75</td><td>1.60</td></tr>
             <tr><td>trend ETH · 100-day</td><td>115%</td><td class="neg">−26%</td><td>1.71</td><td>2.15</td></tr>
             <tr><td>momentum top5 + regime</td><td>127%</td><td class="neg">−37%</td><td>1.79</td><td>2.09</td></tr>
@@ -133,7 +133,7 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">The pattern is clear: the exciting strategies — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed: 2.09 → 0.02). Mean-reversion lost money. Only <span class="em-green">trend-following</span> held up on data it never saw. So that's what we built.</p>
+      <p class="reveal">The pattern is clear: the exciting strategies — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed: 2.09 → 0.02). Mean-reversion lost money. Only <span class="em-green">trend-following</span> held up on data it never saw. We then diversified the winner across the majors (BTC/ETH/BNB/SOL), lifting out-of-sample Sharpe <span class="em-green">2.27 → 2.53</span> — that's the final strategy.</p>
     </div>
   </section>
 
@@ -141,8 +141,8 @@
   <section id="results" data-screen-label="Results">
     <div class="wrap">
       <div class="beat reveal">Beat 04 — Backtested, out-of-sample</div>
-      <h2 class="reveal-words">More return than holding BTC. A third of the drawdown.</h2>
-      <p class="big reveal">Same $1, 2023→2026. In for the uptrends, out for the crashes — so it ends higher <em>and</em> dips far less. Pick the window:</p>
+      <h2 class="reveal-words">More return than holding BTC. Far less drawdown.</h2>
+      <p class="big reveal">Same $1, 2023→2026. The agent holds the major coins that are trending — BTC, ETH, BNB, SOL — and sits in stablecoins for the rest. In for the uptrends, out for the crashes. Pick the window:</p>
 
       <!-- MA WINDOW TOGGLE -->
       <div class="lev-toggle reveal" role="group" aria-label="Moving-average window">
@@ -155,14 +155,14 @@
       <div class="chart reveal" id="chart">
         <div class="chart-fallback" id="chartFallback">Backtest chart loads here.</div>
       </div>
-      <p class="caption reveal">Growth of $1, log scale. Green = trend-following BTC; grey = buy &amp; hold. <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
+      <p class="caption reveal">Growth of $1, log scale. Green = the trending-majors basket (BTC/ETH/BNB/SOL); grey = buy &amp; hold BTC. <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
 
       <!-- STAT STRIP (updates with the MA toggle) -->
       <div class="statstrip">
-        <div class="stat reveal" data-i="0"><div class="sv"><span class="count" id="stat-ret" data-to="872" data-dec="0" data-prefix="+" data-suffix="%">+872%</span></div><div class="sl">Total return · 3.4 yrs</div></div>
-        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" id="stat-apr" data-to="94" data-dec="1" data-suffix="%">94.0%</span></div><div class="sl">APR · per year</div></div>
-        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" id="stat-dd" data-to="-17" data-dec="1" data-suffix="%">−17.0%</span></div><div class="sl">Max drawdown</div></div>
-        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" id="stat-sharpe" data-to="2.18" data-dec="2">2.18</span></div><div class="sl">Sharpe ratio</div></div>
+        <div class="stat reveal" data-i="0"><div class="sv"><span class="count" id="stat-ret" data-to="1945" data-dec="0" data-prefix="+" data-suffix="%">+1945%</span></div><div class="sl">Total return · 3.4 yrs</div></div>
+        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" id="stat-apr" data-to="141" data-dec="1" data-suffix="%">141.0%</span></div><div class="sl">APR · per year</div></div>
+        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" id="stat-dd" data-to="-19" data-dec="1" data-suffix="%">−19.0%</span></div><div class="sl">Max drawdown</div></div>
+        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" id="stat-sharpe" data-to="2.66" data-dec="2">2.66</span></div><div class="sl">Sharpe ratio</div></div>
       </div>
 
       <div class="tablewrap reveal">
@@ -171,14 +171,14 @@
             <tr><th>Setting</th><th>Return · 3.4y</th><th>APR / yr</th><th>Max DD</th><th>Sharpe · OOS</th></tr>
           </thead>
           <tbody id="trendTableBody">
-            <tr data-ma="50"><td>Trend BTC · 50-day</td><td>+2193%</td><td>150%</td><td class="neg">−15%</td><td>3.22</td></tr>
-            <tr data-ma="100" class="skill"><td>Trend BTC · 100-day</td><td>+872%</td><td>94%</td><td class="neg">−17%</td><td>2.27</td></tr>
-            <tr data-ma="200"><td>Trend BTC · 200-day</td><td>+471%</td><td>66%</td><td class="neg">−21%</td><td>1.60</td></tr>
+            <tr data-ma="50"><td>Trend majors · 50-day</td><td>+4101%</td><td>198%</td><td class="neg">−13%</td><td>3.23</td></tr>
+            <tr data-ma="100" class="skill"><td>Trend majors · 100-day</td><td>+1945%</td><td>141%</td><td class="neg">−19%</td><td>2.53</td></tr>
+            <tr data-ma="200"><td>Trend majors · 200-day</td><td>+785%</td><td>89%</td><td class="neg">−20%</td><td>1.64</td></tr>
             <tr class="bench"><td>Buy &amp; hold BTC</td><td>+265%</td><td>46%</td><td class="neg">−51%</td><td class="neg">0.23</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal">The honest read: holding BTC also paid in a bull market — but with a <span class="em-red">−51% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.23). Trend kept a <span class="em-green">third of the drawdown</span> and held its Sharpe on unseen data. Not a bigger gamble — a better-controlled one.</p>
+      <p class="reveal">The honest read: holding BTC also paid in a bull market — but with a <span class="em-red">−51% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.23). The trend basket kept drawdown to <span class="em-green">−19%</span> and lifted its out-of-sample Sharpe to <span class="em-green">2.53</span> — higher than any single coin. Not a bigger gamble — a diversified, better-controlled one.</p>
     </div>
   </section>
 
@@ -212,8 +212,8 @@
       <div class="beat reveal">Under the hood</div>
       <h2 class="reveal-words">A small, deterministic state machine.</h2>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Read.</strong> BTC price and its moving average from CMC (<code>get_crypto_quotes_latest</code>, <code>get_crypto_technical_analysis</code>); Fear &amp; Greed for context.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> <code>price &gt; MA → RISK-ON</code>, hold BTC. <code>price &lt; MA → RISK-OFF</code>, hold stablecoins. Just which side of the line price is on.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Read.</strong> Each major's price and moving average from CMC (<code>get_crypto_quotes_latest</code>, <code>get_crypto_technical_analysis</code>); Fear &amp; Greed for context.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> For each major: <code>price &gt; MA</code> → hold it; <code>price &lt; MA</code> → that slice to stablecoins. Equal-weight whatever's trending.</p></div></div>
         <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Report.</strong> The regime, the position, and the one number that flips it — the MA price level. Auditable, rule-bound.</p></div></div>
       </div>
       <p class="reveal">One knob — the MA window — sets the tempo (<code>50-day</code> aggressive, <code>200-day</code> calm; <code>100-day</code> default). Everything else is fixed: fully deterministic, fully backtestable.</p>
@@ -236,7 +236,7 @@
     }
   }
 }</code></pre>
-      <p class="reveal">Then just ask: <code>Is BTC above its trend right now?</code> &nbsp;or&nbsp; <code>/trend-regime</code></p>
+      <p class="reveal">Then just ask: <code>Which majors are trending right now?</code> &nbsp;or&nbsp; <code>/trend-regime</code></p>
       <div class="btns reveal">
         <a class="btn primary" href="https://github.com/artugrande/trend-regime-skill"><span>View on GitHub →</span></a>
         <a class="btn" href="https://github.com/artugrande/trend-regime-skill/blob/main/skills/trend-regime/SKILL.md"><span>Read the SKILL.md</span></a>
@@ -252,10 +252,10 @@
       <p class="big reveal">The skill decides; you execute — it never touches your funds. The whole loop:</p>
 
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Is BTC above its trend?" It returns <span class="em-green">RISK-ON → hold BTC</span> or <span class="em-red">RISK-OFF → hold cash</span>, plus the exact moving-average price that flips it.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>If RISK-ON → hold BTC.</strong> Buy or keep BTC (BTCB) spot on <strong>PancakeSwap</strong> (e.g. via <strong>Trust Wallet</strong> on BNB Chain). Hold while the trend is up.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>If RISK-OFF → hold stablecoins.</strong> Sell BTC to USDT/USDC and wait out the downtrend. No shorting, no leverage — just out of the market.</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>Re-check daily.</strong> The signal flips only a handful of times a year; when it does, you rotate BTC ↔ stablecoins once. That's the whole job.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Which majors are trending?" It returns each coin as <span class="em-green">RISK-ON → hold</span> or <span class="em-red">RISK-OFF → cash</span>, plus the moving-average price that flips each.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Hold the risk-on majors.</strong> Buy or keep each flagged coin (BTC, ETH, BNB, SOL as BEP-20) on <strong>PancakeSwap</strong>, equal-weight, via <strong>Trust Wallet</strong> on BNB Chain.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>The rest sits in stablecoins.</strong> Any major below its trend → that slice in USDT/USDC. No shorting, no leverage — just out of the ones that aren't working.</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>Re-check daily.</strong> Each coin's signal flips only a handful of times a year; when one does, you rotate that slice in or out. That's the whole job.</p></div></div>
       </div>
 
       <div class="callout reveal">

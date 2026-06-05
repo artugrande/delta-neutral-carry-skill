@@ -1,16 +1,17 @@
 ---
 name: trend-regime
 description: |
-  A trend-following BTC strategy skill driven by CoinMarketCap data. It reads BTC's
-  price relative to its moving average and decides a single regime: hold BTC while
-  price is above the average (uptrend), move to stablecoins while it is below
-  (downtrend). The goal is to capture the large uptrends and sit out the deep
-  drawdowns — more return than buy-and-hold with a fraction of the max drawdown.
-  Use when users ask about trend-following, moving-average / regime strategies,
-  "when should I hold BTC vs cash", risk-managed BTC exposure, or how to avoid the
-  big crypto crashes.
-  Trigger: "trend following", "trend regime", "moving average strategy", "when to
-  hold BTC", "risk on risk off", "avoid the crash", "/trend-regime"
+  A trend-following skill for the major crypto assets, driven by CoinMarketCap data.
+  For each major (BTC, ETH, BNB, SOL) it compares price to a moving average and holds
+  the coin while it trends up, rotating that slice to stablecoins while it trends down —
+  an equal-weight basket of whatever is currently trending. The goal is to capture the
+  large uptrends and sit out the deep drawdowns: more return than buy-and-hold with a
+  fraction of the max drawdown, diversified across coins.
+  Use when users ask about trend-following, moving-average / regime strategies, risk-
+  managed crypto exposure, "which coins should I hold vs cash", or how to avoid the big
+  crypto crashes.
+  Trigger: "trend following", "trend regime", "moving average strategy", "which majors
+  are trending", "risk on risk off", "avoid the crash", "/trend-regime"
 license: MIT
 compatibility: ">=1.0.0"
 user-invocable: true
@@ -20,18 +21,20 @@ allowed-tools:
   - mcp__cmc-mcp__get_global_metrics_latest
 ---
 
-# Trend Regime — Trend-Following BTC Skill
+# Trend Regime — Trend-Following Majors Skill
 
-Hold BTC while it trends up, hold stablecoins while it trends down. The signal is a
-single comparison: **is BTC's price above or below its moving average?** Above = the
-trend is up, stay long BTC and ride it. Below = the trend has turned, step aside to
-stablecoins. The skill never tries to call the exact top or bottom — it keeps you in
-for the long uptrends and out for the deep drawdowns, which is what compounds over time.
+Hold each major coin while it trends up, hold stablecoins while it trends down. For every
+asset in the basket the signal is one comparison: **is price above or below its moving
+average?** Above = trend up, hold that coin. Below = trend turned, rotate that slice to
+stablecoins. The portfolio is an equal weight across whatever majors are currently above
+their average; the rest sits in cash. The skill never calls the exact top or bottom — it
+keeps you in the coins that are working and out of the ones that aren't, which is what
+compounds over time.
 
-This skill does **not** execute trades. It reads live CMC data and outputs one of two
-states — `RISK-ON → hold BTC` or `RISK-OFF → hold stablecoins` — plus the exact price
-level that flips it. Every decision follows the explicit rule below, so the strategy is
-deterministic and backtestable.
+This skill does **not** execute trades. It reads live CMC data and outputs, per asset,
+`RISK-ON → hold` or `RISK-OFF → cash`, the resulting equal-weight allocation, plus the
+exact price level that flips each. Every decision follows the explicit rule below, so the
+strategy is deterministic and backtestable.
 
 ## Why this strategy (the research)
 
@@ -46,9 +49,11 @@ never saw. Results (`references/backtest.md`):
 - The "exciting" strategies decayed out-of-sample: a Fear & Greed contrarian went from
   Sharpe 2.09 in-sample to 0.02 out-of-sample; cross-sectional momentum 1.23 → 0.21.
   Mean-reversion lost money outright.
-- Trend-following BTC (100-day MA) returned **far more than buy-and-hold with about a
-  third of the drawdown** (−17% vs −51%), and its out-of-sample Sharpe (2.27) held
-  above its in-sample Sharpe — the opposite of overfitting.
+- Trend-following on BTC (100-day MA) returned **far more than buy-and-hold with a
+  fraction of the drawdown** (−17% vs −51%), and its out-of-sample Sharpe (2.27) held
+  above its in-sample Sharpe — the opposite of overfitting. **Diversifying the rule across
+  the majors (BTC/ETH/BNB/SOL)** lifted out-of-sample Sharpe further to **2.53** at a
+  similar drawdown — that is the final strategy.
 
 Trend-following is also the most robust documented anomaly across all asset classes, so
 the edge has decades of out-of-crypto evidence behind it, not just this window.
@@ -74,64 +79,75 @@ Get an API key at https://pro.coinmarketcap.com/login
 
 | Parameter | Default | Meaning |
 |-----------|---------|---------|
-| `ASSET` | BTC (id 1) | The trend instrument — deepest liquidity, cleanest trend |
+| `ASSETS` | BTC, ETH, BNB, SOL | Equal-weight basket of liquid majors; each followed independently |
 | `MA_WINDOW` | 100 days | Moving-average lookback. Smaller = more active (50d); larger = calmer (200d) |
-| `BUFFER` | 1.0% | Dead-band around the MA to avoid flip-flopping on tiny crossings (see Step 2) |
-| `CASH` | stablecoins | Where capital sits when RISK-OFF (USDT / USDC) |
+| `BUFFER` | 1.0% | Dead-band around each MA to avoid flip-flopping on tiny crossings (see Step 2) |
+| `CASH` | stablecoins | Where each non-trending slice sits (USDT / USDC) |
 
 > The `MA_WINDOW` is the one real knob and it sets the tempo, not the direction of the
 > edge — the trend family worked at 50, 100, 150 and 200 days. Default **100-day** is a
-> robust middle (out-of-sample Sharpe 2.27). Use **50-day** for a more active, higher-
-> turnover variant (~21 trades/yr), **200-day** for the calmest. Do not over-tune it.
+> robust middle (basket out-of-sample Sharpe **2.53**, ~55 rotations/yr across the four
+> coins). Use **50-day** for a more active, higher-turnover variant, **200-day** for the
+> calmest. Do not over-tune it.
 
 ## Decision Workflow
 
-A 2-state machine: **HOLD-BTC** (RISK-ON) and **HOLD-CASH** (RISK-OFF). Most days nothing
-changes — the regime only flips a handful of times a year.
+A per-coin 2-state machine — each major is **RISK-ON** (held) or **RISK-OFF** (its slice in
+cash) — combined into one equal-weight book. Most days nothing changes; each coin only
+flips a handful of times a year.
 
-### Step 1: Read the trend
+### Step 1: Read the trend, for each major
 
-- `get_crypto_quotes_latest` with id="1" → current BTC price.
-- `get_crypto_technical_analysis` for BTC → the moving average(s) and trend read. Use
-  the `MA_WINDOW`-day moving average (or the nearest CMC exposes). This is the signal.
-- `get_global_metrics_latest` → Fear & Greed Index, for context in the report (it does
-  **not** change the decision — the price-vs-MA comparison is the only rule).
+For each asset in `ASSETS` (BTC, ETH, BNB, SOL):
+- `get_crypto_quotes_latest` → the coin's current price.
+- `get_crypto_technical_analysis` → its `MA_WINDOW`-day moving average and trend read.
+- Compute its gap: `gap% = (price − MA) / MA × 100`.
 
-Compute the gap: `gap% = (price − MA) / MA × 100`.
+`get_global_metrics_latest` → Fear & Greed Index, for context in the report only (it does
+**not** change the decision — the price-vs-MA comparison per coin is the entire rule).
 
-### Step 2: Apply the rule (with a dead-band)
+### Step 2: Apply the rule per coin, then equal-weight
 
-- If `gap% ≥ +BUFFER` → **RISK-ON**: hold BTC.
-- If `gap% ≤ −BUFFER` → **RISK-OFF**: hold stablecoins.
-- If price is within ±`BUFFER` of the MA → **HOLD the current state** (do not flip).
+Classify each major:
+- `gap% ≥ +BUFFER` → **RISK-ON**: this coin is trending, hold it.
+- `gap% ≤ −BUFFER` → **RISK-OFF**: this coin's slice goes to stablecoins.
+- within ±`BUFFER` of the MA → **keep its current state** (do not flip).
 
-The `BUFFER` dead-band is deliberate: it stops the position from whipsawing every time
-price brushes the average. Crossing it cleanly is what triggers a rotation. Do not set
-`BUFFER` to zero "to be precise" — that maximizes turnover, which the backtest punishes.
+Then size the book: **equal-weight across the RISK-ON coins**, remainder in stablecoins.
+(2 of 4 trending → 50% in those two, 50% cash. 0 of 4 → 100% cash. 4 of 4 → 25% each.)
+
+The `BUFFER` dead-band is deliberate: it stops a coin's slice from whipsawing every time
+price brushes its average. Do not set `BUFFER` to zero "to be precise" — that maximizes
+turnover, which the backtest punishes.
 
 ### Step 3: Report
 
-State the regime, the position to hold, and the **single trigger** that flips it — the
-exact MA price level. On a flip from the prior state, say so explicitly (rotate BTC ↔
-stablecoins once). Always make the action and its trigger explicit, so the
-recommendation is auditable and rule-bound.
+Give the per-coin regime, the resulting allocation, and for each coin the **single
+trigger** that flips its slice — the exact MA price level. Call out any coin that flipped
+since the prior run (rotate that slice in or out). Always make the actions and triggers
+explicit, so the recommendation is auditable and rule-bound.
 
 ## Output Structure
 
 ```
 ## Trend Regime — Recommendation (<timestamp>)
 
-Asset: BTC | MA window: 100-day
-BTC price: $XX,XXX | 100-day MA: $XX,XXX | gap: <+/-X.X%>
+Basket: BTC, ETH, BNB, SOL | MA window: 100-day
 Context: Fear & Greed XX (<label>)
 
-### Regime: <RISK-ON / RISK-OFF>
-### Action: <HOLD BTC / MOVE TO STABLECOINS / NO CHANGE>
-- Position: <100% BTC  /  100% stablecoins>
-- Trigger to flip: <RISK-OFF if BTC closes below $XX,XXX (the MA); else hold>
+| Coin | Price | 100-day MA | Gap | Regime |
+|------|------:|-----------:|----:|--------|
+| BTC  | $XX,XXX | $XX,XXX | <+/-X.X%> | <RISK-ON / RISK-OFF> |
+| ETH  | $X,XXX  | $X,XXX  | <+/-X.X%> | <RISK-ON / RISK-OFF> |
+| BNB  | $XXX    | $XXX    | <+/-X.X%> | <RISK-ON / RISK-OFF> |
+| SOL  | $XXX    | $XXX    | <+/-X.X%> | <RISK-ON / RISK-OFF> |
 
-### Why
-<1-2 lines: price vs its MA, which side of the line, and that the rule says hold/flip>
+### Allocation
+- <e.g. 25% BTC · 25% ETH · 50% stablecoins>  (equal-weight across the RISK-ON coins)
+- Per-coin trigger: <COIN goes RISK-OFF if it closes below $XX,XXX (its MA)>
+
+### Changes since last run
+<which coins flipped, if any — rotate those slices; otherwise "no change">
 ```
 
 ## Handling Tool Failures
@@ -153,8 +169,9 @@ Context: Fear & Greed XX (<label>)
 - **The backtest window (2023–2026) was net bullish**, which flatters any long/trend
   strategy. The headline returns will not repeat. The durable, repeatable edge is the
   **drawdown reduction** and the **out-of-sample** Sharpe — sell those, not the APR.
-- This is **directional**: when RISK-ON you carry full BTC price risk. It cuts the depth
-  and duration of drawdowns versus buy-and-hold; it does not remove them.
+- This is **directional**: you carry full price risk on whichever coins are RISK-ON. The
+  basket and the trend rule cut the depth and duration of drawdowns versus buy-and-hold;
+  they do not remove them, and the coins are correlated, so they can fall together.
 - **No leverage by default.** Leverage multiplies the whipsaw losses and adds liquidation
   risk a daily backtest cannot see. Keep it off unless you fully understand that.
 - Judge the strategy on **risk-adjusted** terms (out-of-sample Sharpe, max drawdown), not

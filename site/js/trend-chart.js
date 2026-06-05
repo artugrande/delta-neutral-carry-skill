@@ -12,7 +12,7 @@
 
   var W = 1000, H = 460, PL = 60, PR = 26, PT = 44, PB = 42;
   var PW = W - PL - PR, PH = H - PT - PB;
-  var YMIN = 0.85, YMAX = 26, LB = Math.log(YMIN), LT = Math.log(YMAX);
+  var YMIN = 0.85, YMAX = 50, LB = Math.log(YMIN), LT = Math.log(YMAX);
   function X(i, n) { return PL + (i / (n - 1)) * PW; }
   function Y(v) { return PT + (1 - (Math.log(v) - LB) / (LT - LB)) * PH; }
 
@@ -39,7 +39,7 @@
                ' L' + X(n - 1, n).toFixed(1) + ',' + baseY + ' Z';
 
     var grid = '', ylab = '';
-    [1, 2, 5, 10, 20].forEach(function (v) {
+    [1, 2, 5, 10, 20, 50].forEach(function (v) {
       var y = Y(v).toFixed(1);
       grid += '<line x1="' + PL + '" y1="' + y + '" x2="' + (W - PR) + '" y2="' + y + '" class="grid"/>';
       ylab += '<text x="' + (PL - 10) + '" y="' + (Y(v) + 4).toFixed(1) + '" class="ylab" text-anchor="end">' + v + '×</text>';
@@ -57,7 +57,7 @@
 
     var title = '<text x="500" y="28" class="title" text-anchor="middle">Ride the uptrends, sit out the crashes</text>';
     var legend = '<g transform="translate(' + (PL + 8) + ',46)">' +
-      '<line x1="0" y1="0" x2="22" y2="0" class="strat"/><text x="30" y="5" class="lgd" fill="#ededed">Trend-following BTC · ' + ma + '-day</text>' +
+      '<line x1="0" y1="0" x2="22" y2="0" class="strat"/><text x="30" y="5" class="lgd" fill="#ededed">Trend-following majors · ' + ma + '-day</text>' +
       '<line x1="0" y1="22" x2="22" y2="22" class="btc-line"/><text x="30" y="27" class="lgd" fill="#8a8a8a">Buy &amp; hold BTC</text></g>';
 
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="eqsvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trend-following BTC (' + ma + '-day MA) vs buy and hold BTC, growth of one dollar, log scale">' +
