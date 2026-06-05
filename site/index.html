@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trend Regime — a CoinMarketCap Strategy Skill</title>
-  <meta name="description" content="A CoinMarketCap Agent Skill that trend-follows the major coins (BTC, ETH, BNB, SOL) — holding each while it's above its moving average, stablecoins below. Chosen after backtesting 27 strategies out-of-sample." />
+  <meta name="description" content="A CoinMarketCap Agent Skill that trend-follows the major coins (BTC, ETH, BNB, SOL) — holding each while it's above its moving average, stablecoins below. Chosen after backtesting 30 strategies out-of-sample." />
   <link rel="icon" type="image/svg+xml" href="assets/DNCLOGOSVG.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -46,7 +46,7 @@
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
       <h1 class="reveal-words">Hold the majors in uptrends. <span class="g">Cash in downtrends.</span></h1>
-      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — BTC, ETH, BNB, SOL — and steps aside to stablecoins for the rest. We tested 27 strategies; this one caught the rallies and dodged the −50% crashes.</p>
+      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — BTC, ETH, BNB, SOL — and steps aside to stablecoins for the rest. We tested 30 strategies; this one caught the rallies and dodged the −50% crashes.</p>
       <div class="powered reveal">
         <div class="pwr">
           <img src="assets/coinmarketcappng.png" alt="CoinMarketCap" />
@@ -101,10 +101,10 @@
   <section id="research" data-screen-label="Research">
     <div class="wrap">
       <div class="beat reveal">The research</div>
-      <h2 class="reveal-words">We tested 27 strategies. Trend-following won.</h2>
-      <p class="big reveal">27 strategies, 7 families, same data — scored on a held-out second half they were never tuned on. Median out-of-sample Sharpe, by family:</p>
+      <h2 class="reveal-words">We tested 30 strategies. Trend-following won.</h2>
+      <p class="big reveal">30 strategies, 7 families, same data — scored on a held-out second half they were never tuned on. Median out-of-sample Sharpe, by family:</p>
       <div class="fam-bars reveal">
-        <div class="fam-row"><span class="fam-name">Trend</span><div class="fam-track"><div class="fam-fill" style="width:93%"></div></div><span class="fam-val">2.15</span></div>
+        <div class="fam-row"><span class="fam-name">Trend</span><div class="fam-track"><div class="fam-fill" style="width:93%"></div></div><span class="fam-val">2.21</span></div>
         <div class="fam-row"><span class="fam-name">Momentum</span><div class="fam-track"><div class="fam-fill dim" style="width:19%"></div></div><span class="fam-val">0.44</span></div>
         <div class="fam-row"><span class="fam-name">Volatility</span><div class="fam-track"><div class="fam-fill dim" style="width:19%"></div></div><span class="fam-val">0.43</span></div>
         <div class="fam-row"><span class="fam-name">Passive</span><div class="fam-track"><div class="fam-fill dim" style="width:8%"></div></div><span class="fam-val">0.18</span></div>
@@ -112,7 +112,7 @@
         <div class="fam-row"><span class="fam-name">Mean-rev</span><div class="fam-track"><div class="fam-fill bad" style="width:5%"></div></div><span class="fam-val bad">−0.38</span></div>
       </div>
 
-      <p class="reveal">The exciting ones — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed 2.09 → 0.02); mean-reversion lost money. Only <span class="em-green">trend-following</span> held up. Diversifying it across BTC/ETH/BNB/SOL lifted out-of-sample Sharpe to <span class="em-green">2.53</span> — the final strategy.</p>
+      <p class="reveal">The exciting ones — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed 2.09 → 0.02); mean-reversion lost money. Only <span class="em-green">trend-following</span> held up. And at <strong>every window</strong>, spreading it across the liquid majors (BTC/ETH/BNB/SOL) beat holding any single coin — out-of-sample Sharpe up to <span class="em-green">2.53</span>. That's the final strategy.</p>
     </div>
   </section>
 
@@ -225,7 +225,7 @@ for (const c of MAJORS)
         <div class="hd">Not financial advice — you bear your own risk</div>
         <p>This project is an educational research tool built for a hackathon. Nothing here is financial, investment, or trading advice, and nothing is a recommendation to buy, sell, or hold any asset. You are <strong>solely responsible</strong> for your own decisions, your own funds, and your own risk.</p>
         <p>Trend-following is <strong>not risk-free</strong>. It <strong>whipsaws</strong> in choppy markets — shaken out low, bought back high, bleeding small losses. It always lags the exact top and bottom. The backtest uses daily Binance data with costs applied; live slippage, gas, and timing differ. And <strong>2023–2026 was largely a bull market, which flatters any long/trend strategy</strong> — the headline returns will not repeat.</p>
-        <p>Out-of-sample testing reduces <strong>overfitting risk</strong> but doesn't remove it: we tested 27 strategies, and the more you test, the easier a lucky one slips through. We guard against it by requiring a whole <em>family</em> to hold up on unseen data — but no backtest guarantees the future. Past performance does not predict future results.</p>
+        <p>Out-of-sample testing reduces <strong>overfitting risk</strong> but doesn't remove it: we tested 30 strategies, and the more you test, the easier a lucky one slips through. We guard against it by requiring a whole <em>family</em> to hold up on unseen data — but no backtest guarantees the future. Past performance does not predict future results.</p>
         <p>Do your own research. Only deploy capital you can afford to lose.</p>
       </div>
     </div>

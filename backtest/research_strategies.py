@@ -71,6 +71,13 @@ def main():
             w[c] = (panel[c] > ma).fillna(False).astype(float).values / len(cols)
         return w
 
+    def trend_majors(win, majors=("BTC", "ETH", "BNB", "SOL")):
+        w = zeros()
+        for c in majors:
+            ma = panel[c].rolling(win).mean()
+            w[c] = (panel[c] > ma).fillna(False).astype(float).values / len(majors)
+        return w
+
     def rebal_mask(freq):
         s = idx.to_series()
         if freq == "W":
@@ -170,6 +177,9 @@ def main():
         ("dual-MA BTC 20/100", dual_ma("BTC", 20, 100), "trend"),
         ("trend basket 100d MA", trend_basket(100), "trend"),
         ("trend basket 50d MA", trend_basket(50), "trend"),
+        ("trend MAJORS 50d (BTC/ETH/BNB/SOL)", trend_majors(50), "trend"),
+        ("trend MAJORS 100d (BTC/ETH/BNB/SOL)", trend_majors(100), "trend"),
+        ("trend MAJORS 200d (BTC/ETH/BNB/SOL)", trend_majors(200), "trend"),
         ("momentum top1 (W,30d)", momentum(1, 30), "momentum"),
         ("momentum top3 (W,30d)", momentum(3, 30), "momentum"),
         ("momentum top5 (W,30d)", momentum(5, 30), "momentum"),

@@ -58,7 +58,7 @@
     var title = '<text x="500" y="28" class="title" text-anchor="middle">Ride the uptrends, sit out the crashes</text>';
     var legend = '<g transform="translate(' + (PL + 8) + ',46)">' +
       '<line x1="0" y1="0" x2="22" y2="0" class="strat"/><text x="30" y="5" class="lgd" fill="#ededed">Trend-following majors · ' + ma + '-day</text>' +
-      '<line x1="0" y1="22" x2="22" y2="22" class="btc-line"/><text x="30" y="27" class="lgd" fill="#8a8a8a">Buy &amp; hold BTC</text></g>';
+      '<line x1="0" y1="22" x2="22" y2="22" class="btc-line"/><text x="30" y="27" class="lgd" fill="#8a8a8a">Hold the basket (no timing)</text></g>';
 
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="eqsvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trend-following BTC (' + ma + '-day MA) vs buy and hold BTC, growth of one dollar, log scale">' +
       '<defs><linearGradient id="stratFill" x1="0" y1="0" x2="0" y2="1">' +
