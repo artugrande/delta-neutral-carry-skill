@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trend Regime — a CoinMarketCap Strategy Skill</title>
-  <meta name="description" content="A CoinMarketCap Agent Skill that follows BTC's trend — holding BTC above its moving average, stablecoins below it. Chosen after backtesting 27 strategies out-of-sample." />
+  <meta name="description" content="A CoinMarketCap Agent Skill that trend-follows the major coins (BTC, ETH, BNB, SOL) — holding each while it's above its moving average, stablecoins below. Chosen after backtesting 27 strategies out-of-sample." />
   <link rel="icon" type="image/svg+xml" href="assets/DNCLOGOSVG.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,7 +71,7 @@
       <div class="legs">
         <div class="leg long reveal" data-i="0"><div class="t">A coin above its average</div><div class="v">Hold it</div><div class="leg-glow"></div></div>
         <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
-        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +265% holding BTC, far less drawdown</div><div class="leg-glow"></div></div>
+        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% just holding the four — at a third of the drawdown</div><div class="leg-glow"></div></div>
       </div>
       <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes, spread across four liquid majors so no single coin can sink it. Over years, that's what compounds.</p>
     </div>
@@ -118,18 +118,14 @@
       <div class="tablewrap reveal">
         <table>
           <thead>
-            <tr><th>Strategy (9 of 27)</th><th>APR</th><th>Max DD</th><th>IS Sharpe</th><th>OOS Sharpe</th></tr>
+            <tr><th>Strategy (5 of 27)</th><th>Max DD</th><th>IS Sharpe</th><th>OOS Sharpe</th></tr>
           </thead>
           <tbody>
-            <tr><td>trend BTC · 50-day</td><td>150%</td><td class="neg">−15%</td><td>2.73</td><td class="pos">3.22</td></tr>
-            <tr class="skill"><td>trend BTC · 100-day ← best single coin</td><td>94%</td><td class="neg">−17%</td><td>2.15</td><td class="pos">2.27</td></tr>
-            <tr><td>trend BTC · 200-day</td><td>66%</td><td class="neg">−21%</td><td>1.75</td><td>1.60</td></tr>
-            <tr><td>trend ETH · 100-day</td><td>115%</td><td class="neg">−26%</td><td>1.71</td><td>2.15</td></tr>
-            <tr><td>momentum top5 + regime</td><td>127%</td><td class="neg">−37%</td><td>1.79</td><td>2.09</td></tr>
-            <tr><td>momentum top5 (weekly)</td><td>30%</td><td class="neg">−65%</td><td>1.23</td><td class="neg">0.21</td></tr>
-            <tr class="bench"><td>buy &amp; hold BTC</td><td>46%</td><td class="neg">−51%</td><td>1.78</td><td class="neg">0.23</td></tr>
-            <tr><td>fear &amp; greed contrarian</td><td>24%</td><td class="neg">−41%</td><td>2.09</td><td class="neg">0.02</td></tr>
-            <tr><td>RSI(14) mean-reversion</td><td class="neg">−9%</td><td class="neg">−47%</td><td>0.22</td><td class="neg">−0.38</td></tr>
+            <tr class="skill"><td>trend-following ← winner</td><td class="neg">−17%</td><td>2.15</td><td class="pos">2.27</td></tr>
+            <tr><td>momentum (weekly)</td><td class="neg">−65%</td><td>1.23</td><td class="neg">0.21</td></tr>
+            <tr><td>fear &amp; greed contrarian</td><td class="neg">−41%</td><td>2.09</td><td class="neg">0.02</td></tr>
+            <tr class="bench"><td>buy &amp; hold BTC</td><td class="neg">−51%</td><td>1.78</td><td class="neg">0.23</td></tr>
+            <tr><td>RSI mean-reversion</td><td class="neg">−47%</td><td>0.22</td><td class="neg">−0.38</td></tr>
           </tbody>
         </table>
       </div>
@@ -141,7 +137,7 @@
   <section id="results" data-screen-label="Results">
     <div class="wrap">
       <div class="beat reveal">Beat 04 — Backtested, out-of-sample</div>
-      <h2 class="reveal-words">More return than holding BTC. Far less drawdown.</h2>
+      <h2 class="reveal-words">Same four coins. The timing changes everything.</h2>
       <p class="big reveal">Same $1, 2023→2026. The agent holds the major coins that are trending — BTC, ETH, BNB, SOL — and sits in stablecoins for the rest. In for the uptrends, out for the crashes. Pick the window:</p>
 
       <!-- MA WINDOW TOGGLE -->
@@ -155,7 +151,7 @@
       <div class="chart reveal" id="chart">
         <div class="chart-fallback" id="chartFallback">Backtest chart loads here.</div>
       </div>
-      <p class="caption reveal">Growth of $1, log scale. Green = the trending-majors basket (BTC/ETH/BNB/SOL); grey = buy &amp; hold BTC. <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
+      <p class="caption reveal">Growth of $1, log scale. Green = the trend basket; grey = the <strong>same four coins, just held</strong> (no timing). <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
 
       <!-- STAT STRIP (updates with the MA toggle) -->
       <div class="statstrip">
@@ -174,51 +170,15 @@
             <tr data-ma="50"><td>Trend majors · 50-day</td><td>+4101%</td><td>198%</td><td class="neg">−13%</td><td>3.23</td></tr>
             <tr data-ma="100" class="skill"><td>Trend majors · 100-day</td><td>+1945%</td><td>141%</td><td class="neg">−19%</td><td>2.53</td></tr>
             <tr data-ma="200"><td>Trend majors · 200-day</td><td>+785%</td><td>89%</td><td class="neg">−20%</td><td>1.64</td></tr>
-            <tr class="bench"><td>Buy &amp; hold BTC</td><td>+265%</td><td>46%</td><td class="neg">−51%</td><td class="neg">0.23</td></tr>
+            <tr class="bench"><td>Hold the 4 coins (no timing)</td><td>+254%</td><td>45%</td><td class="neg">−61%</td><td class="neg">0.09</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal">The honest read: holding BTC also paid in a bull market — but with a <span class="em-red">−51% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.23). The trend basket kept drawdown to <span class="em-green">−19%</span> and lifted its out-of-sample Sharpe to <span class="em-green">2.53</span> — higher than any single coin. Not a bigger gamble — a diversified, better-controlled one.</p>
+      <p class="reveal">Just holding the four also paid in a bull run — but with a <span class="em-red">−61% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.09). Timing them by trend kept drawdown to <span class="em-green">−19%</span> and held an out-of-sample Sharpe of <span class="em-green">2.53</span>. Same coins — the timing is the whole difference.</p>
     </div>
   </section>
 
-  <!-- WHAT ABOUT THE FUTURE -->
-  <section id="future" data-screen-label="The future">
-    <div class="wrap">
-      <div class="beat reveal">What about the future?</div>
-      <h2 class="reveal-words">We won't promise a number. Here's the honest version.</h2>
-      <p class="big reveal">The curve looks steeper after 2025 — but that's <strong>compounding</strong>, not the strategy getting smarter. A +40% year on a bigger base just adds more dollars; on a log axis the slope is steady. A good past doesn't buy a good future.</p>
-      <p class="reveal">What <em>should</em> persist is structural: as long as crypto keeps having big trends and big crashes, the rule keeps you in for the rallies and out for the −50% drops. That <span class="em-green">drawdown control</span> is the durable edge. The <strong>return</strong> depends on what BTC does next — which nobody can promise.</p>
-      <p class="reveal">So instead of a forecast, here's what <strong>$100 today</strong> becomes by 2030 at different annual rates. Pick the one you believe — it's an illustration, not a prediction:</p>
-      <div class="tablewrap reveal">
-        <table>
-          <thead><tr><th>If it returns… per year</th><th>$100 by 2030 (~4 yrs)</th></tr></thead>
-          <tbody>
-            <tr><td>10% — crypto goes sideways</td><td>$146</td></tr>
-            <tr><td>20%</td><td>$207</td></tr>
-            <tr class="skill"><td>30% — moderate bull</td><td>$286</td></tr>
-            <tr><td>50% — strong bull</td><td>$506</td></tr>
-            <tr class="bench"><td>94% — only if the exceptional repeats</td><td>$1,416</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="reveal">Realistic lives in the <strong>10–30% band</strong>, with drawdowns along the way. Over decades the compounding gets dramatic — but so does the uncertainty. The optimizer that actually matters long-term is boring: low costs, robustness, and not abandoning the rule.</p>
-    </div>
-  </section>
 
-  <!-- HOW IT WORKS -->
-  <section data-screen-label="Under the hood">
-    <div class="wrap">
-      <div class="beat reveal">Under the hood</div>
-      <h2 class="reveal-words">A small, deterministic state machine.</h2>
-      <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Read.</strong> Each major's price and moving average from CMC (<code>get_crypto_quotes_latest</code>, <code>get_crypto_technical_analysis</code>); Fear &amp; Greed for context.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> For each major: <code>price &gt; MA</code> → hold it; <code>price &lt; MA</code> → that slice to stablecoins. Equal-weight whatever's trending.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Report.</strong> The regime, the position, and the one number that flips it — the MA price level. Auditable, rule-bound.</p></div></div>
-      </div>
-      <p class="reveal">One knob — the MA window — sets the tempo (<code>50-day</code> aggressive, <code>200-day</code> calm; <code>100-day</code> default). Everything else is fixed: fully deterministic, fully backtestable.</p>
-    </div>
-  </section>
 
   <!-- INSTALL -->
   <section id="install" data-screen-label="Install">
@@ -244,45 +204,25 @@
     </div>
   </section>
 
-  <!-- FROM SIGNAL TO POSITION -->
-  <section id="invest" data-screen-label="How to run it">
-    <div class="wrap">
-      <div class="beat reveal">From signal to position</div>
-      <h2 class="reveal-words">How you'd actually run it.</h2>
-      <p class="big reveal">The skill decides; you execute — it never touches your funds. The whole loop:</p>
-
-      <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Which majors are trending?" It returns each coin as <span class="em-green">RISK-ON → hold</span> or <span class="em-red">RISK-OFF → cash</span>, plus the moving-average price that flips each.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Hold the risk-on majors.</strong> Buy or keep each flagged coin (BTC, ETH, BNB, SOL as BEP-20) on <strong>PancakeSwap</strong>, equal-weight, via <strong>Trust Wallet</strong> on BNB Chain.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>The rest sits in stablecoins.</strong> Any major below its trend → that slice in USDT/USDC. No shorting, no leverage — just out of the ones that aren't working.</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>Re-check daily.</strong> Each coin's signal flips only a handful of times a year; when one does, you rotate that slice in or out. That's the whole job.</p></div></div>
-      </div>
-
-      <div class="callout reveal">
-        <p><b>Non-custodial by design.</b> The skill never holds your keys, moves your money, or auto-trades. It outputs an auditable signal — every trade is yours, on venues you control.</p>
-      </div>
-    </div>
-  </section>
 
   <!-- RUN IT AUTONOMOUSLY -->
   <section id="agent" data-screen-label="Autonomous agent">
     <div class="wrap">
       <div class="beat reveal">Hands-off</div>
-      <h2 class="reveal-words">Or: let an agent run it for you.</h2>
-      <p class="big reveal">The manual loop works — but the whole thing fits in one scheduled function on <strong>Vercel</strong>. Nobody triggers a trade by hand.</p>
+      <h2 class="reveal-words">Or hand it to an agent on Vercel.</h2>
+      <p class="big reveal">Run it by hand, or let one scheduled function do the whole loop — nobody triggers a trade manually.</p>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Vercel Cron</strong> fires once a day and calls a serverless function — the only "trigger" in the whole system.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p>The function pulls <strong>BTC price + its moving average</strong> from the CoinMarketCap MCP, through the Vercel AI SDK's MCP client.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p>The <strong>rule runs in code</strong>, not in the model: <code>price &gt; MA ? hold BTC : stablecoins</code>. The LLM can narrate; it never decides the trade — so the agent stays reproducible.</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p>On a regime <strong>flip only</strong>, it sends a Telegram alert and (optionally) executes the swap. No flip → it does nothing.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Vercel Cron</strong> fires daily and calls one serverless function. That's the only trigger.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p>It pulls each major's <strong>price + moving average</strong> from the CoinMarketCap MCP (via the Vercel AI SDK), runs the rule <strong>in code</strong> — not the model, so it's reproducible — and sizes the equal-weight book.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p>On a regime <strong>flip only</strong>, it sends a Telegram alert and — if you opt in — executes the swap. <strong>It never holds your keys.</strong></p></div></div>
       </div>
       <pre class="reveal"><code>// vercel.json — the only scheduler
 "crons": [{ "path": "/api/trend-tick", "schedule": "0 12 * * *" }]
 
 // api/trend-tick.js — the decision is plain code, not the LLM
-const target = price > movingAverage ? "BTC" : "STABLE";
-if (target !== lastRegime) notifyAndExecute(target);</code></pre>
-      <p class="reveal">Built on Vercel's agent stack — <a class="ln" href="https://vercel.com/docs/cron-jobs">Cron</a>, <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools">AI SDK MCP client</a>, and the <a class="ln" href="https://vercel.com/docs/ai-gateway">AI Gateway</a>. For the demo it runs <strong>notify-only (paper trade)</strong> — live wallet execution is the same code path, opt-in once keys and risk limits are in place.</p>
+for (const c of MAJORS)
+  target[c] = price[c] > movingAvg[c] ? "HOLD" : "CASH";</code></pre>
+      <p class="reveal">Built on Vercel's agent stack — <a class="ln" href="https://vercel.com/docs/cron-jobs">Cron</a>, <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools">AI SDK MCP client</a> and the <a class="ln" href="https://vercel.com/docs/ai-gateway">AI Gateway</a>. The demo runs <strong>notify-only (paper trade)</strong>; live execution is the same code path, opt-in.</p>
     </div>
   </section>
 
@@ -301,14 +241,6 @@ if (target !== lastRegime) notifyAndExecute(target);</code></pre>
     </div>
   </section>
 
-  <!-- CLOSE -->
-  <section class="close" data-screen-label="Close">
-    <div class="wrap">
-      <div class="beat reveal">Beat 05 — Close</div>
-      <h2 class="reveal-words" style="max-width:620px">No black box.</h2>
-      <p class="big reveal">Explicit rules in a <code>SKILL.md</code>. A 3.4-year backtest you can re-run yourself. A live signal from CoinMarketCap data. Same inputs, <span class="em-green">same output, every time.</span></p>
-    </div>
-  </section>
 
   <!-- DISCLAIMER -->
   <section class="disc-sec" data-screen-label="Disclaimer">

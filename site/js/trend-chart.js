@@ -53,7 +53,7 @@
     var bx = X(n - 1, n), by = Y(b[n - 1]);
     var endTag = '<circle cx="' + ex.toFixed(1) + '" cy="' + ey.toFixed(1) + '" r="4.5" fill="#4ade80"/>' +
       '<text x="' + (ex - 10).toFixed(1) + '" y="' + (ey - 12).toFixed(1) + '" class="tag" fill="#4ade80" text-anchor="end">Trend ' + ma + 'd · ' + fmtSigned(win.ret) + '</text>' +
-      '<text x="' + (bx - 10).toFixed(1) + '" y="' + (by + 16).toFixed(1) + '" class="tag" fill="#8a8a8a" text-anchor="end">Hold BTC · ' + fmtSigned(DATA.benchmark.ret) + '</text>';
+      '<text x="' + (bx - 10).toFixed(1) + '" y="' + (by + 16).toFixed(1) + '" class="tag" fill="#8a8a8a" text-anchor="end">Hold basket · ' + fmtSigned(DATA.benchmark.ret) + '</text>';
 
     var title = '<text x="500" y="28" class="title" text-anchor="middle">Ride the uptrends, sit out the crashes</text>';
     var legend = '<g transform="translate(' + (PL + 8) + ',46)">' +

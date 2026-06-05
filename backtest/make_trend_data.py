@@ -47,11 +47,15 @@ def main():
             pos = min(range(len(samp)), key=lambda k: abs(samp[k] - i))
             xyears.append({"i": pos, "label": str(int(y))})
 
-    # buy & hold BTC benchmark
-    eq_bh = btc / btc.iloc[0]
-    tot, apr, mdd, shp = rs.perf(rets["BTC"])
-    _, _, _, oos = rs.perf(rets["BTC"].iloc[split:])
-    benchmark = {"label": "Buy & hold BTC", "series": ser(eq_bh),
+    # benchmark: HOLD the same 4 majors, equal-weight, no timing (apples-to-apples)
+    bench_w = zeros()
+    for c in MAJORS:
+        bench_w[c] = 1.0 / len(MAJORS)
+    bdaily, _, _ = rs.to_daily(bench_w, rets)
+    eq_bh = (1 + bdaily).cumprod()
+    tot, apr, mdd, shp = rs.perf(bdaily)
+    _, _, _, oos = rs.perf(bdaily.iloc[split:])
+    benchmark = {"label": "Hold the basket (no timing)", "series": ser(eq_bh),
                  "ret": round(tot, 4), "apr": round(apr, 4), "dd": round(mdd, 4),
                  "sharpe": round(shp, 2), "oos": round(oos, 2), "trades": 0}
 
