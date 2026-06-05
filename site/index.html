@@ -25,10 +25,10 @@
         <span>Trend Regime</span>
       </a>
       <div class="nav-links">
-        <a href="#strategy" class="nlink hide-sm">Strategy</a>
         <a href="#research" class="nlink hide-sm">Research</a>
-        <a href="#results" class="nlink hide-sm">Results</a>
-        <a href="#install" class="nlink hide-sm">Install</a>
+        <a href="#strategy" class="nlink hide-sm">The rule</a>
+        <a href="#results" class="nlink hide-sm">Proof</a>
+        <a href="#agent" class="nlink hide-sm">Run it</a>
         <a href="https://x.com/ArtuGrande" class="gh handle-btn" target="_blank" rel="noopener">
           <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="currentColor"><path d="M9.52 6.77L15.48 0h-1.41L8.9 5.88 4.77 0H0l6.25 9.1L0 16h1.41l5.46-6.21L11.23 16H16L9.52 6.77zm-1.93 2.2l-.63-.9L1.92 1.04h2.17l4.06 5.81.63.9 5.28 7.55h-2.17L7.59 8.97z"/></svg>
           <span>@artugrande</span>
@@ -45,8 +45,8 @@
   <header class="hero" id="top" data-screen-label="Hero">
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
-      <h1 class="reveal-words">Hold the majors in uptrends. <span class="g">Cash in downtrends.</span></h1>
-      <p class="lead reveal">A CoinMarketCap skill that holds the major coins that are trending — and steps aside to stablecoins for the rest. We tested 30 strategies; this one caught the rallies and dodged the −50% crashes.</p>
+      <h1 class="reveal-words">In a bull market, every bot's a genius. <span class="g">Then the market turns.</span></h1>
+      <p class="lead reveal">So we did the boring thing: tested 30 ways to trade crypto with CoinMarketCap data, and kept the only one that survived the crashes — a trend-following skill across the four majors.</p>
       <div class="coins-row reveal">
         <span class="coin-pill"><img src="assets/coins/btc.png" alt="" /><span>BTC</span></span>
         <span class="coin-pill"><img src="assets/coins/eth.png" alt="" /><span>ETH</span></span>
@@ -68,47 +68,12 @@
     <div class="scroll-cue reveal" aria-hidden="true"><span></span></div>
   </header>
 
-  <!-- BEAT 2 — WHAT IT IS -->
-  <section id="strategy" data-screen-label="What it is">
-    <div class="wrap">
-      <div class="beat reveal">Beat 02 — What it is</div>
-      <h2 class="reveal-words">Each major above its trend: hold it. Below: cash.</h2>
-      <p class="big reveal">Every major coin gets one line — its own <strong>moving average</strong>. Above it, the agent holds that coin; below it, that slice sits in stablecoins. Equal-weight whatever's trending. That's the entire rule.</p>
-      <div class="legs">
-        <div class="leg long reveal" data-i="0"><div class="t">A coin above its average</div><div class="v">Hold it</div><div class="leg-glow"></div></div>
-        <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
-        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% just holding the four — at a third of the drawdown</div><div class="leg-glow"></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BEAT 3 — KNOWS WHEN NOT TO TRADE -->
-  <section id="live" data-screen-label="Live moment">
-    <div class="wrap">
-      <div class="beat reveal">Beat 03 — The live moment</div>
-      <h2 class="reveal-words">Live: which majors are <span class="g">trending?</span></h2>
-      <p class="big reveal">Ask it live, against real CoinMarketCap data:</p>
-
-      <!-- LIVE TERMINAL WIDGET -->
-      <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a 100% cash verdict because no major is above its 100-day average during Extreme Fear.">
-        <div class="term-bar">
-          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
-          <span class="term-title">trend-regime · live signal</span>
-          <span class="term-live"><i></i>CMC data</span>
-        </div>
-        <div class="term-body" id="termBody"></div>
-      </div>
-
-      <p class="reveal">Right now: all four below their averages, in Extreme Fear → <span class="em-green">100% stablecoins.</span> No catching the falling knife.</p>
-    </div>
-  </section>
-
   <!-- THE RESEARCH -->
   <section id="research" data-screen-label="Research">
     <div class="wrap">
-      <div class="beat reveal">The research</div>
-      <h2 class="reveal-words">We tested 30 strategies. Trend-following won.</h2>
-      <p class="big reveal">30 strategies, 7 families, same data — scored on a held-out second half they were never tuned on. Median out-of-sample Sharpe, by family:</p>
+      <div class="beat reveal">01 — The temptation</div>
+      <h2 class="reveal-words">We built the tempting strategies first. They blew up.</h2>
+      <p class="big reveal">With CoinMarketCap data and an agent, the obvious moves are: predict price, chase momentum, trade the Fear &amp; Greed crowd. So we built all 30 — across 7 families — and scored each on a held-out second half it was never tuned on. Median out-of-sample Sharpe, by family:</p>
       <div class="fam-bars reveal">
         <div class="fam-row"><span class="fam-name">Trend</span><div class="fam-track"><div class="fam-fill" style="width:93%"></div></div><span class="fam-val">2.21</span></div>
         <div class="fam-row"><span class="fam-name">Momentum</span><div class="fam-track"><div class="fam-fill dim" style="width:19%"></div></div><span class="fam-val">0.44</span></div>
@@ -118,14 +83,28 @@
         <div class="fam-row"><span class="fam-name">Mean-rev</span><div class="fam-track"><div class="fam-fill bad" style="width:5%"></div></div><span class="fam-val bad">−0.38</span></div>
       </div>
 
-      <p class="reveal">The exciting ones — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed 2.09 → 0.02); mean-reversion lost money. Only <span class="em-green">trend-following</span> held up. And at <strong>every window</strong>, spreading it across the liquid majors (BTC/ETH/BNB/SOL) beat holding any single coin — out-of-sample Sharpe up to <span class="em-green">2.53</span>. That's the final strategy.</p>
+      <p class="reveal">Almost all of them <span class="em-red">collapsed out-of-sample</span> — momentum, Fear &amp; Greed (2.09 → 0.02), mean-reversion lost money outright. <span class="em-green">One unglamorous idea kept its edge on data it never saw: follow the trend.</span> And at <strong>every window</strong>, spreading it across the liquid majors (BTC/ETH/BNB/SOL) beat holding any single coin — out-of-sample Sharpe up to <strong>2.53</strong>. That's the strategy.</p>
+    </div>
+  </section>
+
+  <!-- BEAT 2 — WHAT IT IS -->
+  <section id="strategy" data-screen-label="What it is">
+    <div class="wrap">
+      <div class="beat reveal">02 — The rule</div>
+      <h2 class="reveal-words">Each major above its trend: hold it. Below: cash.</h2>
+      <p class="big reveal">So here's the whole thing — and it's almost dumb. Every major coin gets one line: its own <strong>moving average</strong>. Above it, the agent holds that coin; below it, that slice sits in stablecoins. Equal-weight whatever's trending. That's the entire rule.</p>
+      <div class="legs">
+        <div class="leg long reveal" data-i="0"><div class="t">A coin above its average</div><div class="v">Hold it</div><div class="leg-glow"></div></div>
+        <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
+        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% just holding the four — at a third of the drawdown</div><div class="leg-glow"></div></div>
+      </div>
     </div>
   </section>
 
   <!-- BEAT 4 — THE BACKTEST -->
   <section id="results" data-screen-label="Results">
     <div class="wrap">
-      <div class="beat reveal">Beat 04 — Backtested, out-of-sample</div>
+      <div class="beat reveal">03 — The proof</div>
       <h2 class="reveal-words">Same four coins. The timing changes everything.</h2>
       <p class="big reveal">Same $1, 2023→2026: the trend basket vs just holding the same four coins. Pick the window:</p>
 
@@ -166,12 +145,31 @@
     </div>
   </section>
 
+  <!-- BEAT 3 — KNOWS WHEN NOT TO TRADE -->
+  <section id="live" data-screen-label="Live moment">
+    <div class="wrap">
+      <div class="beat reveal">04 — See it think</div>
+      <h2 class="reveal-words">Live: which majors are <span class="g">trending?</span></h2>
+      <p class="big reveal">Ask it live, against real CoinMarketCap data:</p>
 
+      <!-- LIVE TERMINAL WIDGET -->
+      <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a 100% cash verdict because no major is above its 100-day average during Extreme Fear.">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+          <span class="term-title">trend-regime · live signal</span>
+          <span class="term-live"><i></i>CMC data</span>
+        </div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+
+      <p class="reveal">Right now: all four below their averages, in Extreme Fear → <span class="em-green">100% stablecoins.</span> No catching the falling knife.</p>
+    </div>
+  </section>
 
   <!-- INSTALL -->
   <section id="install" data-screen-label="Install">
     <div class="wrap">
-      <div class="beat reveal">Get it running</div>
+      <div class="beat reveal">05 — Make it yours</div>
       <h2 class="reveal-words">Install in any Claude-skill host.</h2>
       <p class="reveal">Drop the skill folder into your skills directory:</p>
       <pre class="reveal"><code>cp -r skills/trend-regime /path/to/your/skills/directory/</code></pre>
@@ -192,11 +190,10 @@
     </div>
   </section>
 
-
   <!-- RUN IT AUTONOMOUSLY -->
   <section id="agent" data-screen-label="Autonomous agent">
     <div class="wrap">
-      <div class="beat reveal">Run it autonomously</div>
+      <div class="beat reveal">06 — It runs itself</div>
       <h2 class="reveal-words">Give it a wallet. It trades for you.</h2>
       <p class="big reveal">Not a notifier — an agent with <strong>its own private key</strong> that places the swaps itself, no human in the loop. How you'd build it on BNB Chain:</p>
       <div class="steps">
@@ -220,7 +217,7 @@ for (const coin of ["BTC", "ETH", "BNB", "SOL"])
   <!-- BUILT WITH CLAUDE -->
   <section id="engine" data-screen-label="The engine">
     <div class="wrap">
-      <div class="beat reveal">How this was built</div>
+      <div class="beat reveal">07 — Who built it</div>
       <h2 class="reveal-words">Built end-to-end with Claude Opus 4.8.</h2>
       <p class="big reveal">The 30-strategy backtest, the out-of-sample validation, the skill, this site, and the agent above — all built with <strong>Claude Opus 4.8</strong>. Why it's the right model to design a strategy like this:</p>
       <div class="steps">
@@ -232,7 +229,6 @@ for (const coin of ["BTC", "ETH", "BNB", "SOL"])
       <p class="reveal">The model does the research and the building; the strategy itself stays a hard rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
     </div>
   </section>
-
 
   <!-- DISCLAIMER -->
   <section class="disc-sec" data-screen-label="Disclaimer">
