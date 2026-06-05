@@ -182,6 +182,30 @@
     </div>
   </section>
 
+  <!-- WHAT ABOUT THE FUTURE -->
+  <section id="future" data-screen-label="The future">
+    <div class="wrap">
+      <div class="beat reveal">What about the future?</div>
+      <h2 class="reveal-words">We won't promise a number. Here's the honest version.</h2>
+      <p class="big reveal">The curve looks steeper after 2025 — but that's <strong>compounding</strong>, not the strategy getting smarter. A +40% year on a bigger base just adds more dollars; on a log axis the slope is steady. A good past doesn't buy a good future.</p>
+      <p class="reveal">What <em>should</em> persist is structural: as long as crypto keeps having big trends and big crashes, the rule keeps you in for the rallies and out for the −50% drops. That <span class="em-green">drawdown control</span> is the durable edge. The <strong>return</strong> depends on what BTC does next — which nobody can promise.</p>
+      <p class="reveal">So instead of a forecast, here's what <strong>$100 today</strong> becomes by 2030 at different annual rates. Pick the one you believe — it's an illustration, not a prediction:</p>
+      <div class="tablewrap reveal">
+        <table>
+          <thead><tr><th>If it returns… per year</th><th>$100 by 2030 (~4 yrs)</th></tr></thead>
+          <tbody>
+            <tr><td>10% — crypto goes sideways</td><td>$146</td></tr>
+            <tr><td>20%</td><td>$207</td></tr>
+            <tr class="skill"><td>30% — moderate bull</td><td>$286</td></tr>
+            <tr><td>50% — strong bull</td><td>$506</td></tr>
+            <tr class="bench"><td>94% — only if the exceptional repeats</td><td>$1,416</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reveal">Realistic lives in the <strong>10–30% band</strong>, with drawdowns along the way. Over decades the compounding gets dramatic — but so does the uncertainty. The optimizer that actually matters long-term is boring: low costs, robustness, and not abandoning the rule.</p>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <section data-screen-label="Under the hood">
     <div class="wrap">
@@ -237,6 +261,43 @@
       <div class="callout reveal">
         <p><b>Non-custodial by design.</b> The skill never holds your keys, moves your money, or auto-trades. It outputs an auditable signal — every trade is yours, on venues you control.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- RUN IT AUTONOMOUSLY -->
+  <section id="agent" data-screen-label="Autonomous agent">
+    <div class="wrap">
+      <div class="beat reveal">Hands-off</div>
+      <h2 class="reveal-words">Or: let an agent run it for you.</h2>
+      <p class="big reveal">The manual loop works — but the whole thing fits in one scheduled function on <strong>Vercel</strong>. Nobody triggers a trade by hand.</p>
+      <div class="steps">
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Vercel Cron</strong> fires once a day and calls a serverless function — the only "trigger" in the whole system.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p>The function pulls <strong>BTC price + its moving average</strong> from the CoinMarketCap MCP, through the Vercel AI SDK's MCP client.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p>The <strong>rule runs in code</strong>, not in the model: <code>price &gt; MA ? hold BTC : stablecoins</code>. The LLM can narrate; it never decides the trade — so the agent stays reproducible.</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p>On a regime <strong>flip only</strong>, it sends a Telegram alert and (optionally) executes the swap. No flip → it does nothing.</p></div></div>
+      </div>
+      <pre class="reveal"><code>// vercel.json — the only scheduler
+"crons": [{ "path": "/api/trend-tick", "schedule": "0 12 * * *" }]
+
+// api/trend-tick.js — the decision is plain code, not the LLM
+const target = price > movingAverage ? "BTC" : "STABLE";
+if (target !== lastRegime) notifyAndExecute(target);</code></pre>
+      <p class="reveal">Built on Vercel's agent stack — <a class="ln" href="https://vercel.com/docs/cron-jobs">Cron</a>, <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools">AI SDK MCP client</a>, and the <a class="ln" href="https://vercel.com/docs/ai-gateway">AI Gateway</a>. For the demo it runs <strong>notify-only (paper trade)</strong> — live wallet execution is the same code path, opt-in once keys and risk limits are in place.</p>
+    </div>
+  </section>
+
+  <!-- BUILT WITH CLAUDE -->
+  <section id="engine" data-screen-label="The engine">
+    <div class="wrap">
+      <div class="beat reveal">The engine</div>
+      <h2 class="reveal-words">Built to run on Claude Opus 4.8.</h2>
+      <p class="big reveal">Why this model for an always-on agent that touches money? Three things matter more than raw IQ:</p>
+      <div class="steps">
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Reliable tool use.</strong> Opus 4.8 specifically improved tool triggering — it doesn't skip the price, balance, or execute calls a trading tick depends on.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Long-horizon stability.</strong> A 1M-token context and steadier long agent loops mean it doesn't derail over a run that lives for months.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Honest about failure.</strong> It glosses over hidden failures only ~3.7% of the time (per Anthropic's Opus 4.8 announcement) — a money agent has to surface bad data and failed fills, not bury them.</p></div></div>
+      </div>
+      <p class="reveal">And it's <strong>deterministic by design</strong>: structured JSON outputs, behavior driven by explicit rules rather than random sampling. The model orchestrates and explains; the strategy stays a hard rule. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
     </div>
   </section>
 
