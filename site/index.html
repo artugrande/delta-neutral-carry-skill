@@ -71,7 +71,7 @@
       <div class="legs">
         <div class="leg long reveal" data-i="0"><div class="t">Price &gt; its average</div><div class="v">Hold BTC</div><div class="leg-glow"></div></div>
         <div class="leg short reveal" data-i="1"><div class="t">Price &lt; its average</div><div class="v">Move to cash</div><div class="leg-glow"></div></div>
-        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–2026 (100-day)</div><div class="v">More upside than holding BTC, a third of the drawdown</div><div class="leg-glow"></div></div>
+        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–2026 (100-day)</div><div class="v">More upside, a third of the drawdown</div><div class="leg-glow"></div></div>
       </div>
       <p class="reveal">It never nails the exact top or bottom — it just stays <strong>in</strong> for the big uptrends and <strong>out</strong> for the deep crashes. Over years, that's what compounds.</p>
     </div>
@@ -133,7 +133,7 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">The pattern is brutal: the exciting strategies — momentum, Fear &amp; Greed — looked great in-sample and <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed went 2.09 → 0.02). Mean-reversion lost money outright. Only <span class="em-green">trend-following</span> held up across every parameter <em>and</em> on data it never saw. So that's what we built.</p>
+      <p class="reveal">The pattern is clear: the exciting strategies — momentum, Fear &amp; Greed — looked great in-sample, then <span class="em-red">collapsed out-of-sample</span> (Fear &amp; Greed: 2.09 → 0.02). Mean-reversion lost money. Only <span class="em-green">trend-following</span> held up on data it never saw. So that's what we built.</p>
     </div>
   </section>
 
@@ -155,7 +155,7 @@
       <div class="chart reveal" id="chart">
         <div class="chart-fallback" id="chartFallback">Backtest chart loads here.</div>
       </div>
-      <p class="caption reveal">Growth of $1, log scale. Green = trend-following BTC at the selected window; grey = buy &amp; hold BTC. Faster windows (50-day) trade more and return more in this sample; slower windows (200-day) are calmer. <strong>2023–2026 was net bullish, which inflates every APR here</strong> — the durable, repeatable edge is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
+      <p class="caption reveal">Growth of $1, log scale. Green = trend-following BTC; grey = buy &amp; hold. <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
 
       <!-- STAT STRIP (updates with the MA toggle) -->
       <div class="statstrip">
@@ -178,7 +178,7 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">The honest read: holding BTC was a fine bet in a bull market — but it carried a <span class="em-red">−51% drawdown</span> and its risk-adjusted return <span class="em-red">collapsed out-of-sample</span> (Sharpe 0.23). Trend-following kept a <span class="em-green">third of the drawdown</span> and held its Sharpe on unseen data. That's the edge: not a bigger gamble, a better-controlled one.</p>
+      <p class="reveal">The honest read: holding BTC also paid in a bull market — but with a <span class="em-red">−51% drawdown</span> and a Sharpe that <span class="em-red">collapsed out-of-sample</span> (0.23). Trend kept a <span class="em-green">third of the drawdown</span> and held its Sharpe on unseen data. Not a bigger gamble — a better-controlled one.</p>
     </div>
   </section>
 
@@ -188,11 +188,11 @@
       <div class="beat reveal">Under the hood</div>
       <h2 class="reveal-words">A small, deterministic state machine.</h2>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Read.</strong> BTC spot price and its moving average from CMC — <code>get_crypto_quotes_latest</code> and <code>get_crypto_technical_analysis</code> — plus Fear &amp; Greed from <code>get_global_metrics_latest</code> for context.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> <code>price &gt; MA → RISK-ON</code>: hold BTC. <code>price &lt; MA → RISK-OFF</code>: move to stablecoins. No prediction, no thresholds to tune mid-trade — just which side of the line price is on.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Report.</strong> Current regime, the position to hold, and the single number that flips it — the exact price level of the moving average. Auditable and rule-bound.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Read.</strong> BTC price and its moving average from CMC (<code>get_crypto_quotes_latest</code>, <code>get_crypto_technical_analysis</code>); Fear &amp; Greed for context.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Decide.</strong> <code>price &gt; MA → RISK-ON</code>, hold BTC. <code>price &lt; MA → RISK-OFF</code>, hold stablecoins. Just which side of the line price is on.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Report.</strong> The regime, the position, and the one number that flips it — the MA price level. Auditable, rule-bound.</p></div></div>
       </div>
-      <p class="reveal">One parameter — the MA window — sets the tempo: <code>50-day</code> is more active and aggressive, <code>200-day</code> calmer. Default is <code>100-day</code>. Everything else is fixed, so the strategy is fully deterministic and backtestable.</p>
+      <p class="reveal">One knob — the MA window — sets the tempo (<code>50-day</code> aggressive, <code>200-day</code> calm; <code>100-day</code> default). Everything else is fixed: fully deterministic, fully backtestable.</p>
     </div>
   </section>
 
@@ -229,13 +229,13 @@
 
       <div class="steps">
         <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Ask the Skill.</strong> "Is BTC above its trend?" It returns <span class="em-green">RISK-ON → hold BTC</span> or <span class="em-red">RISK-OFF → hold cash</span>, plus the exact moving-average price that flips it.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>If RISK-ON → hold BTC.</strong> Buy or keep BTC (BTCB) spot on <strong>PancakeSwap</strong> with a wallet like <strong>Trust Wallet</strong> on BNB Chain. Then just hold while the trend is up.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>If RISK-ON → hold BTC.</strong> Buy or keep BTC (BTCB) spot on <strong>PancakeSwap</strong> (e.g. via <strong>Trust Wallet</strong> on BNB Chain). Hold while the trend is up.</p></div></div>
         <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>If RISK-OFF → hold stablecoins.</strong> Sell BTC to USDT/USDC and wait out the downtrend. No shorting, no leverage — just out of the market.</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>Re-check daily.</strong> The signal only changes on a trend flip — a handful of times a year. When it flips, you rotate BTC ↔ stablecoins once. That's the entire job.</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>Re-check daily.</strong> The signal flips only a handful of times a year; when it does, you rotate BTC ↔ stablecoins once. That's the whole job.</p></div></div>
       </div>
 
       <div class="callout reveal">
-        <p><b>Non-custodial by design.</b> The Skill never holds your keys, never moves your money, and never auto-trades. It produces an auditable signal — every trade is made by you, on venues you control.</p>
+        <p><b>Non-custodial by design.</b> The skill never holds your keys, moves your money, or auto-trades. It outputs an auditable signal — every trade is yours, on venues you control.</p>
       </div>
     </div>
   </section>
@@ -255,8 +255,8 @@
       <div class="disclaimer reveal">
         <div class="hd">Not financial advice — you bear your own risk</div>
         <p>This project is an educational research tool built for a hackathon. Nothing here is financial, investment, or trading advice, and nothing is a recommendation to buy, sell, or hold any asset. You are <strong>solely responsible</strong> for your own decisions, your own funds, and your own risk.</p>
-        <p>Trend-following is <strong>not risk-free</strong>. It <strong>whipsaws</strong> in choppy, directionless markets — shaken out low, bought back high, bleeding small losses in a row. It always lags the exact top and bottom by design. The backtest uses daily Binance data with transaction costs applied, but live slippage, gas, and execution will differ. Crucially, <strong>2023–2026 was largely a bull market, which flatters any long/trend strategy</strong> — the headline returns shown will not repeat.</p>
-        <p>Out-of-sample testing reduces but does not eliminate <strong>overfitting risk</strong>. We backtested 27 strategies, and the more you test, the more a lucky one can slip through. We guard against it by requiring a whole <em>family</em> to hold up on data it never saw — but no backtest guarantees the future. Past performance does not predict future results.</p>
+        <p>Trend-following is <strong>not risk-free</strong>. It <strong>whipsaws</strong> in choppy markets — shaken out low, bought back high, bleeding small losses. It always lags the exact top and bottom. The backtest uses daily Binance data with costs applied; live slippage, gas, and timing differ. And <strong>2023–2026 was largely a bull market, which flatters any long/trend strategy</strong> — the headline returns will not repeat.</p>
+        <p>Out-of-sample testing reduces <strong>overfitting risk</strong> but doesn't remove it: we tested 27 strategies, and the more you test, the easier a lucky one slips through. We guard against it by requiring a whole <em>family</em> to hold up on unseen data — but no backtest guarantees the future. Past performance does not predict future results.</p>
         <p>Do your own research. Only deploy capital you can afford to lose.</p>
       </div>
     </div>
