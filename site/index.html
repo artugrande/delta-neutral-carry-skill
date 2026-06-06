@@ -46,7 +46,7 @@
     <div class="wrap">
       <div class="eyebrow reveal">BNB Hack · Track 2 · Strategy Skills</div>
       <h1 class="reveal-words">In a bull market, every bot's a genius. <span class="g">Then the market turns.</span></h1>
-      <p class="lead reveal">So we did the boring thing: tested 30 ways to trade crypto with CoinMarketCap data, and kept the only one that survived the crashes — a trend-following skill across the four majors.</p>
+      <p class="lead reveal">We tested 30 ways to trade crypto with CoinMarketCap data. We kept the one that survived the crashes: a trend-following skill on the four major coins.</p>
       <div class="coins-row reveal">
         <span class="coin-pill"><img src="assets/coins/btc.png" alt="" /><span>BTC</span></span>
         <span class="coin-pill"><img src="assets/coins/eth.png" alt="" /><span>ETH</span></span>
@@ -71,9 +71,9 @@
   <!-- THE RESEARCH -->
   <section id="research" data-screen-label="Research">
     <div class="wrap">
-      <div class="beat reveal">01 — The temptation</div>
-      <h2 class="reveal-words">We built the tempting strategies first. They blew up.</h2>
-      <p class="big reveal">With CoinMarketCap data and an agent, the obvious moves are: predict price, chase momentum, trade the Fear &amp; Greed crowd. So we built all 30 — across 7 families — and scored each on a held-out second half it was never tuned on. Median out-of-sample Sharpe, by family:</p>
+      <div class="beat reveal">01 — The obvious ideas</div>
+      <h2 class="reveal-words">We built the obvious strategies first. They failed.</h2>
+      <p class="big reveal">With CoinMarketCap data, the obvious ideas are: predict the price, follow momentum, trade the Fear &amp; Greed mood. We built all 30, in 7 groups — then tested each on new data it had never seen. Risk-adjusted score (Sharpe) by group:</p>
       <div class="fam-bars reveal">
         <div class="fam-row"><span class="fam-name">Trend</span><div class="fam-track"><div class="fam-fill" style="width:93%"></div></div><span class="fam-val">2.21</span></div>
         <div class="fam-row"><span class="fam-name">Momentum</span><div class="fam-track"><div class="fam-fill dim" style="width:19%"></div></div><span class="fam-val">0.44</span></div>
@@ -83,7 +83,7 @@
         <div class="fam-row"><span class="fam-name">Mean-rev</span><div class="fam-track"><div class="fam-fill bad" style="width:5%"></div></div><span class="fam-val bad">−0.38</span></div>
       </div>
 
-      <p class="reveal">Almost all of them <span class="em-red">collapsed out-of-sample</span> — momentum, Fear &amp; Greed (2.09 → 0.02), mean-reversion lost money outright. <span class="em-green">One unglamorous idea kept its edge on data it never saw: follow the trend.</span> And at <strong>every window</strong>, spreading it across the liquid majors (BTC/ETH/BNB/SOL) beat holding any single coin — out-of-sample Sharpe up to <strong>2.53</strong>. That's the strategy.</p>
+      <p class="reveal">Almost all of them <span class="em-red">broke on new data</span> — Fear &amp; Greed fell from 2.09 to 0.02, mean-reversion lost money. <span class="em-green">Only one idea kept working on data it had never seen: follow the trend.</span> And running it on all four majors (BTC, ETH, BNB, SOL) beat any single coin — score up to <strong>2.53</strong>. That's the strategy.</p>
     </div>
   </section>
 
@@ -92,11 +92,11 @@
     <div class="wrap">
       <div class="beat reveal">02 — The rule</div>
       <h2 class="reveal-words">Each major above its trend: hold it. Below: cash.</h2>
-      <p class="big reveal">So here's the whole thing — and it's almost dumb. Every major coin gets one line: its own <strong>moving average</strong>. Above it, the agent holds that coin; below it, that slice sits in stablecoins. Equal-weight whatever's trending. That's the entire rule.</p>
+      <p class="big reveal">The whole rule is simple. Each coin has one line — its <strong>moving average</strong>. Price above the line? Hold the coin. Below? That part goes to stablecoins. Hold every coin that's trending, in equal parts. That's it.</p>
       <div class="legs">
         <div class="leg long reveal" data-i="0"><div class="t">A coin above its average</div><div class="v">Hold it</div><div class="leg-glow"></div></div>
         <div class="leg short reveal" data-i="1"><div class="t">A coin below its average</div><div class="v">That slice → cash</div><div class="leg-glow"></div></div>
-        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% just holding the four — at a third of the drawdown</div><div class="leg-glow"></div></div>
+        <div class="leg eq reveal" data-i="2"><div class="t">Result, 2023–26 (100-day)</div><div class="v">+1945% vs +254% from just holding the four — with far smaller drops</div><div class="leg-glow"></div></div>
       </div>
     </div>
   </section>
@@ -106,7 +106,7 @@
     <div class="wrap">
       <div class="beat reveal">03 — The proof</div>
       <h2 class="reveal-words">Same four coins. The timing changes everything.</h2>
-      <p class="big reveal">Same $1, 2023→2026: the trend basket vs just holding the same four coins. Pick the window:</p>
+      <p class="big reveal">Same $1, 2023 to 2026. The strategy vs just holding the same four coins. Pick the window:</p>
 
       <!-- MA WINDOW TOGGLE -->
       <div class="lev-toggle reveal" role="group" aria-label="Moving-average window">
@@ -119,20 +119,20 @@
       <div class="chart reveal" id="chart">
         <div class="chart-fallback" id="chartFallback">Backtest chart loads here.</div>
       </div>
-      <p class="caption reveal">Growth of $1, log scale. Green = the trend basket; grey = the <strong>same four coins, just held</strong> (no timing). <strong>Heads-up: 2023–2026 was a bull market, so the APRs are inflated</strong> — what's durable is the drawdown cut and the out-of-sample Sharpe, not the headline return.</p>
+      <p class="caption reveal">$1 over time (log scale). Green = the strategy; grey = the <strong>same four coins, just held</strong>. <strong>Note: 2023–2026 was a bull market, so the returns look big</strong> — what matters is the smaller drops and the score on new data, not the headline number.</p>
 
       <!-- STAT STRIP (updates with the MA toggle) -->
       <div class="statstrip">
         <div class="stat reveal" data-i="0"><div class="sv"><span class="count" id="stat-ret" data-to="1945" data-dec="0" data-prefix="+" data-suffix="%">+1945%</span></div><div class="sl">Total return · 3.4 yrs</div></div>
-        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" id="stat-apr" data-to="141" data-dec="1" data-suffix="%">141.0%</span></div><div class="sl">APR · per year</div></div>
-        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" id="stat-dd" data-to="-19" data-dec="1" data-suffix="%">−19.0%</span></div><div class="sl">Max drawdown</div></div>
-        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" id="stat-sharpe" data-to="2.66" data-dec="2">2.66</span></div><div class="sl">Sharpe ratio</div></div>
+        <div class="stat reveal" data-i="1"><div class="sv"><span class="count" id="stat-apr" data-to="141" data-dec="1" data-suffix="%">141.0%</span></div><div class="sl">Per year</div></div>
+        <div class="stat reveal" data-i="2"><div class="sv neg"><span class="count" id="stat-dd" data-to="-19" data-dec="1" data-suffix="%">−19.0%</span></div><div class="sl">Worst drop</div></div>
+        <div class="stat reveal" data-i="3"><div class="sv"><span class="count" id="stat-sharpe" data-to="2.66" data-dec="2">2.66</span></div><div class="sl">Score · risk-adjusted</div></div>
       </div>
 
       <div class="tablewrap reveal">
         <table>
           <thead>
-            <tr><th>Setting</th><th>Return · 3.4y</th><th>APR / yr</th><th>Max DD</th><th>Sharpe · OOS</th></tr>
+            <tr><th>Setting</th><th>Return · 3.4y</th><th>Per year</th><th>Worst drop</th><th>Score · new data</th></tr>
           </thead>
           <tbody id="trendTableBody">
             <tr data-ma="50"><td>Trend majors · 50-day</td><td>+4101%</td><td>198%</td><td class="neg">−13%</td><td>3.23</td></tr>
@@ -150,7 +150,7 @@
     <div class="wrap">
       <div class="beat reveal">04 — See it think</div>
       <h2 class="reveal-words">Live: which majors are <span class="g">trending?</span></h2>
-      <p class="big reveal">Ask it live, against real CoinMarketCap data:</p>
+      <p class="big reveal">Ask it now, with live CoinMarketCap data:</p>
 
       <!-- LIVE TERMINAL WIDGET -->
       <div class="terminal reveal" id="terminal" role="img" aria-label="Skill terminal showing a 100% cash verdict because no major is above its 100-day average during Extreme Fear.">
@@ -162,7 +162,7 @@
         <div class="term-body" id="termBody"></div>
       </div>
 
-      <p class="reveal">Right now: all four below their averages, in Extreme Fear → <span class="em-green">100% stablecoins.</span> No catching the falling knife.</p>
+      <p class="reveal">Right now all four are below their lines, in Extreme Fear. So: <span class="em-green">100% stablecoins.</span> It waits.</p>
     </div>
   </section>
 
@@ -171,9 +171,9 @@
     <div class="wrap">
       <div class="beat reveal">05 — Make it yours</div>
       <h2 class="reveal-words">Install in any Claude-skill host.</h2>
-      <p class="reveal">Drop the skill folder into your skills directory:</p>
+      <p class="reveal">Copy the skill folder into your skills folder:</p>
       <pre class="reveal"><code>cp -r skills/trend-regime /path/to/your/skills/directory/</code></pre>
-      <p class="reveal">Then connect the CoinMarketCap MCP (get a free key at <a href="https://pro.coinmarketcap.com/login" class="ln">pro.coinmarketcap.com</a>):</p>
+      <p class="reveal">Then connect CoinMarketCap (free key at <a href="https://pro.coinmarketcap.com/login" class="ln">pro.coinmarketcap.com</a>):</p>
       <pre class="reveal"><code>{
   "mcpServers": {
     "cmc-mcp": {
@@ -195,13 +195,13 @@
     <div class="wrap">
       <div class="beat reveal">06 — It runs itself</div>
       <h2 class="reveal-words">Give it a wallet. It trades for you.</h2>
-      <p class="big reveal">Not a notifier — an agent with <strong>its own private key</strong> that places the swaps itself, no human in the loop. How you'd build it on BNB Chain:</p>
+      <p class="big reveal">Not just an alert — an agent with <strong>its own wallet</strong> that makes the trades itself, no human needed. How to build it on BNB Chain:</p>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Give it its own wallet.</strong> Generate a fresh keypair and fund it with your capital plus a little BNB for gas. It's a hot wallet — only what you'd risk. The private key lives in the agent's encrypted env vars.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Schedule the tick.</strong> A <strong>daily</strong> cron is enough — the rule reads a <em>daily</em> moving average, so checking hourly would just re-read the same candle. Each tick pulls the four majors' price + MA from the CoinMarketCap MCP and computes the target allocation in code.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Read its own holdings.</strong> With <code>viem</code> it reads the wallet's balances on BNB Chain — so it knows what it's holding versus what the rule wants.</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>It trades itself.</strong> For each coin that flipped — entered or left the basket — it builds, signs, and sends a <strong>PancakeSwap</strong> swap with its own key. No notification, no human.</p></div></div>
-        <div class="step reveal" data-i="4"><div class="n">05</div><div class="b"><p><strong>Cost stays low.</strong> Swaps fire only on a regime <strong>flip</strong> — a handful per coin per year — so gas is rare; the daily check itself is basically free.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Give it a wallet.</strong> Make a new key and add your money plus a little BNB for gas. Use only what you can risk. The private key stays in the agent's secret settings.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Run it once a day.</strong> Daily is enough — the rule uses a daily average, so checking more often changes nothing. Each run reads the four prices and their averages from CoinMarketCap, then decides the target mix in code.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Check what it holds.</strong> With <code>viem</code> it reads the wallet's balances — so it knows what it has versus what the rule wants.</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>It trades.</strong> For each coin that changed, it signs and sends a <strong>PancakeSwap</strong> trade with its own key. No alert, no human.</p></div></div>
+        <div class="step reveal" data-i="4"><div class="n">05</div><div class="b"><p><strong>It's cheap.</strong> It only trades when a coin crosses its line — a few times a year. So gas is rare, and the daily check is basically free.</p></div></div>
       </div>
       <pre class="reveal"><code>// daily cron — the agent's OWN key signs every swap, no human in the loop
 const account = privateKeyToAccount(process.env.AGENT_PRIVATE_KEY);
@@ -210,7 +210,7 @@ const held    = await readBalances(account);        // current on-chain holdings
 for (const coin of ["BTC", "ETH", "BNB", "SOL"])
   if (target[coin] !== held[coin])                  // only on a flip
     await pancakeSwap(account, coin, target[coin]); // signs + sends the tx</code></pre>
-      <p class="reveal">Built on <a class="ln" href="https://vercel.com/docs/cron-jobs">Vercel Cron</a> + <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://vercel.com/docs/mcp">CoinMarketCap MCP</a>, and <a class="ln" href="https://viem.sh">viem</a> for signing. <span class="em-red">A hot key holding real funds is a real risk</span> — run it dry first, and use a dedicated low-balance wallet, slippage caps, and a kill switch.</p>
+      <p class="reveal">Built on <a class="ln" href="https://vercel.com/docs/cron-jobs">Vercel Cron</a> + <a class="ln" href="https://vercel.com/docs/functions">Functions</a>, the <a class="ln" href="https://vercel.com/docs/mcp">CoinMarketCap MCP</a>, and <a class="ln" href="https://viem.sh">viem</a>. <span class="em-red">A key holding real money is a real risk</span> — test it without funds first, use a small separate wallet, set slippage limits, and a kill switch.</p>
     </div>
   </section>
 
@@ -219,14 +219,14 @@ for (const coin of ["BTC", "ETH", "BNB", "SOL"])
     <div class="wrap">
       <div class="beat reveal">07 — Who built it</div>
       <h2 class="reveal-words">Built end-to-end with Claude Opus 4.8.</h2>
-      <p class="big reveal">The 30-strategy backtest, the out-of-sample validation, the skill, this site, and the agent above — all built with <strong>Claude Opus 4.8</strong>. Why it's the right model to design a strategy like this:</p>
+      <p class="big reveal">The 30-strategy test, the new-data check, the skill, this site, and the agent — all built with <strong>Claude Opus 4.8</strong>. Why it's the right model for this:</p>
       <div class="steps">
-        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>Agentic coding &amp; tool use.</strong> It ran the backtests itself and wired the CoinMarketCap MCP — iterating on real numbers, not pseudocode.</p></div></div>
-        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>Long-horizon reasoning.</strong> It held the whole research thread — 30 strategies, in-sample vs out-of-sample — coherent across a long build, on a 1M-token context, without losing the plot.</p></div></div>
-        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Rigor over hype.</strong> It pushed for out-of-sample validation, flagged overfitting, and refused to quote benchmarks it couldn't verify (it glosses over hidden failures only ~3.7% of the time, per Anthropic).</p></div></div>
-        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>From idea to spec.</strong> It turned a fuzzy "follow the trend" into an explicit, deterministic, backtestable rule.</p></div></div>
+        <div class="step reveal" data-i="0"><div class="n">01</div><div class="b"><p><strong>It codes and uses tools.</strong> It ran the backtests itself and connected CoinMarketCap — working with real numbers, not guesses.</p></div></div>
+        <div class="step reveal" data-i="1"><div class="n">02</div><div class="b"><p><strong>It thinks long.</strong> It kept the whole research in mind — 30 strategies, old data vs new data — across a long build, without getting lost.</p></div></div>
+        <div class="step reveal" data-i="2"><div class="n">03</div><div class="b"><p><strong>Honest, not hype.</strong> It insisted on testing with new data, warned about overfitting, and refused to use numbers it couldn't check. (It hides failures only ~3.7% of the time, per Anthropic.)</p></div></div>
+        <div class="step reveal" data-i="3"><div class="n">04</div><div class="b"><p><strong>From idea to rule.</strong> It turned a vague "follow the trend" into a clear, exact, testable rule.</p></div></div>
       </div>
-      <p class="reveal">The model does the research and the building; the strategy itself stays a hard rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
+      <p class="reveal">Claude does the research and the building. The strategy stays a simple rule in code. <a class="ln" href="https://www.anthropic.com/news">More on Claude Opus 4.8 →</a></p>
     </div>
   </section>
 
@@ -235,10 +235,10 @@ for (const coin of ["BTC", "ETH", "BNB", "SOL"])
     <div class="wrap">
       <div class="disclaimer reveal">
         <div class="hd">Not financial advice — you bear your own risk</div>
-        <p>This project is an educational research tool built for a hackathon. Nothing here is financial, investment, or trading advice, and nothing is a recommendation to buy, sell, or hold any asset. You are <strong>solely responsible</strong> for your own decisions, your own funds, and your own risk.</p>
-        <p>Trend-following is <strong>not risk-free</strong>. It <strong>whipsaws</strong> in choppy markets — shaken out low, bought back high, bleeding small losses. It always lags the exact top and bottom. The backtest uses daily Binance data with costs applied; live slippage, gas, and timing differ. And <strong>2023–2026 was largely a bull market, which flatters any long/trend strategy</strong> — the headline returns will not repeat.</p>
-        <p>Out-of-sample testing reduces <strong>overfitting risk</strong> but doesn't remove it: we tested 30 strategies, and the more you test, the easier a lucky one slips through. We guard against it by requiring a whole <em>family</em> to hold up on unseen data — but no backtest guarantees the future. Past performance does not predict future results.</p>
-        <p>Do your own research. Only deploy capital you can afford to lose.</p>
+        <p>This is a research project built for a hackathon. It is not financial or trading advice, and not a recommendation to buy or sell anything. You alone are <strong>responsible</strong> for your decisions, your money, and your risk.</p>
+        <p>Trend-following is <strong>not risk-free</strong>. In choppy markets it gets whipsawed — it sells low and buys back high, losing a bit each time. It always misses the exact top and bottom. The backtest uses daily Binance data with costs; real slippage, gas, and timing will differ. And <strong>2023–2026 was mostly a bull market, which makes any trend strategy look good</strong> — those returns will not repeat.</p>
+        <p>Testing on new data lowers the risk of <strong>overfitting</strong>, but doesn't remove it: we tried 30 strategies, and the more you try, the easier a lucky one slips through. We guard against this by requiring a whole <em>group</em> to work on new data — but no backtest can promise the future. Past results don't predict future results.</p>
+        <p>Do your own research. Only use money you can afford to lose.</p>
       </div>
     </div>
   </section>
