@@ -321,7 +321,7 @@ footer a:hover { color: var(--accent); }
 .brand:hover img { transform: rotate(-12deg) scale(1.08); }
 .brand span { font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--fg); white-space: nowrap; }
 .nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .15s ease; }
+.nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .15s ease; white-space: nowrap; }
 .nav-links a:hover { color: var(--fg); }
 /* animated underline that grows from the center outward */
 .nav-links a.nlink { position: relative; }
